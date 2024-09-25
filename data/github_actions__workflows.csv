@@ -1,0 +1,2 @@
+workflow_name,workflow_schedule
+dbt_run_streamline_chainhead,"3,33 * * * *"

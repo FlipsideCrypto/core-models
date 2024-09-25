@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: github_actions
+    database: "{{ 'CORE' if target.database == 'CORE' else 'CORE_DEV' }}"
+    schema: github_actions
+    tables:
+      - name: workflows
+  - name: bronze_streamline
+    database: streamline
+    schema: |
+      {{ "CORE_DEV" if var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else "CORE" }}
+    tables:
+      - name: blocks
+      - name: transactions
+      - name: receipts
+      - name: traces
+      - name: confirm_blocks
+      - name: decoded_logs
