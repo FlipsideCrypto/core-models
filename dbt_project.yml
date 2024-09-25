@@ -83,7 +83,7 @@ vars:
   # The keys correspond to dbt profiles and are case sensitive
     dev:
       API_INTEGRATION: AWS_CORE_API_STG_V2
-      EXTERNAL_FUNCTION_URI: y5r18zijv5.execute-api.us-east-1.amazonaws.com/stg/
+      EXTERNAL_FUNCTION_URI: jxvwlr7746.execute-api.us-east-1.amazonaws.com/stg/
       ROLES:
         - AWS_LAMBDA_CORE_API
         - INTERNAL_DEV
