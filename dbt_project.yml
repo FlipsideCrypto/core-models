@@ -90,7 +90,7 @@ vars:
 
     prod:
       API_INTEGRATION: AWS_CORE_API_PROD_V2
-      EXTERNAL_FUNCTION_URI: 
+      EXTERNAL_FUNCTION_URI: 5foaq9dteg.execute-api.us-east-1.amazonaws.com/prod/
       ROLES:
         - AWS_LAMBDA_CORE_API
         - INTERNAL_DEV
