@@ -5,6 +5,9 @@ deploy_streamline_functions:
 	dbt run -s livequery_models.deploy.core --vars '{"UPDATE_UDFS_AND_SPS":True}' -t $(DBT_TARGET)
 	dbt run-operation fsc_utils.create_evm_streamline_udfs --vars '{"UPDATE_UDFS_AND_SPS":True}' -t $(DBT_TARGET)
 
+cleanup_time:
+	rm -f package-lock.yml && dbt clean && dbt deps
+
 deploy_streamline_tables:
 	rm -f package-lock.yml && dbt clean && dbt deps
 ifeq ($(findstring dev,$(DBT_TARGET)),dev)
@@ -28,4 +31,4 @@ else
 	dbt run-operation fsc_utils.create_gha_tasks --vars '{"START_GHA_TASKS":True}' -t $(DBT_TARGET)
 endif
 
-.PHONY: deploy_streamline_functions deploy_streamline_tables deploy_streamline_requests deploy_github_actions
+.PHONY: deploy_streamline_functions deploy_streamline_tables deploy_streamline_requests deploy_github_actions cleanup_time

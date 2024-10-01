@@ -70,7 +70,7 @@ vars:
   HEAL_MODEL: False
   HEAL_MODELS: []
   START_GHA_TASKS: False
-  RELOAD_TRACES: False
+
 
 #### STREAMLINE 2.0 BEGIN ####
 
@@ -97,3 +97,68 @@ vars:
         - DBT_CLOUD_CORE
 
 #### STREAMLINE 2.0 END ####
+
+#### FSC_EVM BEGIN ####
+
+  API_URL: '{Service}/{Authentication}'
+  VAULT_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
+
+#### FSC_EVM END ####
+
+#### STREAMLINE PARAMETERS BEGIN ####
+
+### BLOCKS_TRANSACTIONS
+
+  ### UNIVERSAL
+  BLOCKS_TRANSACTIONS_EXPLODED_KEY: ["data", "result.transactions"] ### OPTIONAL, not at realtime / history level since explosion is at the request level
+
+  ### REALTIME
+  BLOCKS_TRANSACTIONS_REALTIME_SQL_LIMIT: 2400
+  BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800
+  BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800
+  BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
+  ### BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, this is the default value
+  ### BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
+  ### BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
+
+### RECEIPTS
+
+  ### UNIVERSAL
+  RECEIPTS_EXPLODED_KEY: ["result"] ### OPTIONAL, not at realtime / history level since explosion is at the request level
+
+  ### REALTIME
+  RECEIPTS_REALTIME_SQL_LIMIT: 2400
+  RECEIPTS_REALTIME_PRODUCER_BATCH_SIZE: 800
+  RECEIPTS_REALTIME_WORKER_BATCH_SIZE: 800
+  RECEIPTS_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
+  ### RECEIPTS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, this is the default value
+  ### RECEIPTS_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
+  ### RECEIPTS_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
+
+### TRACES
+
+  ### UNIVERSAL
+  TRACES_EXPLODED_KEY: ["result"] ### OPTIONAL, not at realtime / history level since explosion is at the request level
+
+  ### REALTIME
+  TRACES_REALTIME_SQL_LIMIT: 2400
+  TRACES_REALTIME_PRODUCER_BATCH_SIZE: 800
+  TRACES_REALTIME_WORKER_BATCH_SIZE: 800
+  TRACES_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
+  ### TRACES_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, this is the default value
+  ### TRACES_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
+  ### TRACES_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
+
+### CONFIRM BLOCKS
+
+  ### REALTIME
+
+  CONFIRM_BLOCKS_REALTIME_SQL_LIMIT: 2400
+  CONFIRM_BLOCKS_REALTIME_PRODUCER_BATCH_SIZE: 800
+  CONFIRM_BLOCKS_REALTIME_WORKER_BATCH_SIZE: 800
+  CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
+  ### CONFIRM_BLOCKS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, this is the default value
+  ### CONFIRM_BLOCKS_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
+  ### CONFIRM_BLOCKS_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
+
+#### STREAMLINE PARAMETERS END ####
