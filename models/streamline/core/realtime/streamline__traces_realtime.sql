@@ -1,1 +1,1 @@
-{{ fsc_evm.streamline_core_requests_v2() }}
+{{ fsc_evm.streamline_core_requests() }}
