@@ -4,7 +4,7 @@
 ----
 
 ```yml
-{{ chain }}: -- see dbt_project.yml for the project name, replace {{ chain }}/{{ CHAIN }} with the project name, remove this comment
+{{ chain }}: -- replace {{ chain }}/{{ CHAIN }} with the profile or name from, remove this comment in your yml
   target: dev
   outputs:
     dev:
