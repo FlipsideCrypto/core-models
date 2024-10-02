@@ -100,44 +100,40 @@ vars:
 
 #### FSC_EVM BEGIN ####
 
+  ### ALWAYS REQUIRED
   PROD_DB_NAME: 'core'
   API_URL: '{Service}/{Authentication}'
   VAULT_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   BLOCKS_PER_HOUR: 1200
-  BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill
-  START_UP_BLOCK: 17962900 ### OPTIONAL, default is 0
-  MAX_SEQUENCE_NUMBER: 50000000 ### OPTIONAL, default is 100000000 blocks. 
-  USES_RECEIPTS_BY_HASH: True
+
+  ### OPTIONAL
+  USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
+  BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill (move comment to wiki)
+  START_UP_BLOCK: 17962900 ### default is 0 (move comment to wiki)
+  MAX_SEQUENCE_NUMBER: 50000000 ### default is 100000000 blocks. (move comment to wiki)
 
 #### FSC_EVM END ####
 
-#### STREAMLINE PARAMETERS BEGIN ####
+#### STREAMLINE PARAMETERS BEGIN - SEE abc.xyz FOR ALL AVAILABLE PARAMETERS ####
 
-### BLOCKS_TRANSACTIONS
-
-  ### REALTIME
-  BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
-
-  ### BLOCKS_TRANSACTIONS_REALTIME_SQL_LIMIT: 2400 ### OPTIONAL, default is 2 x BLOCKS_PER_HOUR
-  ### BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800 ### OPTIONAL, default is 2 x BLOCKS_PER_HOUR
-  ### BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800 ### OPTIONAL, default is 2 x BLOCKS_PER_HOUR / lambdas in model config (1 for all models, 2 for traces and block receipts)
-  ### BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, desc is default for realtime and asc is default for history
-  ### BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
-  ### BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
-
-### RECEIPTS_BY_HASH
-
-  ### REALTIME
-  RECEIPTS_BY_HASH_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
-
-### TRACES
-
-  ### REALTIME
-  TRACES_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
-
-### CONFIRM BLOCKS
-
-  ### REALTIME
-  CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
-
+  ### OPTIONAL 
+  BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  RECEIPTS_BY_HASH_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  TRACES_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  
 #### STREAMLINE PARAMETERS END ####
+
+# MOVE TO WIKI AND DOCUMENT THOROUGHLY, THEN REMOVE FROM HERE
+  # BLOCKS_TRANSACTIONS_REALTIME_SQL_LIMIT: 4800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR / lambdas in model config (1 for all models, 2 for traces and block receipts) (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### desc is default for realtime and asc is default for history (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### meant for testing purposes only (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### default is 'streamline' (move comment to wiki)
+
+# document sample Variable Name Format 
+  # <model_name>_<model_type>_<parameter_name>
+  # <parameter_name> If only supplied, global parameter. Required for all variables.
+  # <model_type> could be realtime, history, complete, etc., if applicable
+  # <model_name> is the name of the model, if applicable
