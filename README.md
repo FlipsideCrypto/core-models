@@ -9,9 +9,9 @@
   outputs:
     dev:
       type: snowflake
-      account: <ACCOUNT>
+      account: {{ ACCOUNT }}
       role: INTERNAL_DEV
-      user: <USERNAME>
+      user: {{ USERNAME }}
       authenticator: externalbrowser
       region: us-east-1
       database: {{ CHAIN }}_DEV
@@ -19,13 +19,13 @@
       schema: silver
       threads: 4
       client_session_keep_alive: False
-      query_tag: dbt_<user>_dev
+      query_tag: dbt_{{ USERNAME }}_dev
 
     prod:
       type: snowflake
-      account: <ACCOUNT>
+      account: {{ ACCOUNT }}
       role: DBT_CLOUD_{{ CHAIN }}
-      user: <USERNAME>
+      user: {{ USERNAME }}
       authenticator: externalbrowser
       region: us-east-1
       database: {{ CHAIN }}
@@ -33,7 +33,7 @@
       schema: silver
       threads: 4
       client_session_keep_alive: False
-      query_tag: dbt_<user>_dev
+      query_tag: dbt_{{ USERNAME }}_dev
 ```
 
 ### Common DBT Run Variables
@@ -74,6 +74,11 @@ The following variables can be used to control various aspects of the dbt run. U
 5. Start GHA tasks:
    ```
    dbt seed -s github_actions__workflows && dbt run -m models/github_actions --full-refresh && dbt run-operation fsc_utils.create_gha_tasks --vars '{"START_GHA_TASKS":True}'
+   ```
+
+6. Using two or more variables:
+   ```
+   dbt run --vars '{"UPDATE_UDFS_AND_SPS":true,"STREAMLINE_INVOKE_STREAMS":true,"STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES":true}' -m ...
    ```
 
 > Note: Replace `-m ...` with appropriate model selections or tags as needed for your project structure.
