@@ -1,10 +1,14 @@
 {% macro run_sp_create_prod_clone() %}
+    {% set prod_db_name = var('PROD_DB_NAME') | upper %}
+    {% set dev_suffix = var('DEV_DATABASE_SUFFIX', '_DEV') %}
+    {% set clone_role = var('CLONE_ROLE', 'internal_dev') %}
+
     {% set clone_query %}
-    call core._internal.create_prod_clone(
-        'core',
-        'core_dev',
-        'internal_dev'
+    call {{ prod_db_name }}._internal.create_prod_clone(
+        '{{ prod_db_name }}',
+        '{{ prod_db_name }}{{ dev_suffix }}',
+        '{{ clone_role }}'
     );
-{% endset %}
+    {% endset %}
     {% do run_query(clone_query) %}
 {% endmacro %}

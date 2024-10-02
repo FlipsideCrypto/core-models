@@ -1,15 +1,15 @@
-version: 2
+version: 2 
 
 sources:
   - name: github_actions
-    database: "{{ 'CORE' if target.database == 'CORE' else 'CORE_DEV' }}"
+    database: "{{ target.database }}"
     schema: github_actions
     tables:
       - name: workflows
   - name: bronze_streamline
     database: streamline
-    schema: |
-      {{ "CORE_DEV" if var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else "CORE" }}
+    schema: >-
+      {{ var('PROD_DB_NAME') ~ ('_dev' if var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else '') }}
     tables:
       - name: blocks
       - name: transactions

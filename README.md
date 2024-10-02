@@ -4,48 +4,81 @@
 ----
 
 ```yml
-core:
+{{ chain }}: -- see dbt_project.yml for the project name, replace {{ chain }}/{{ CHAIN }} with the project name, remove this comment
   target: dev
   outputs:
     dev:
       type: snowflake
       account: <ACCOUNT>
-      role: <ROLE>
+      role: INTERNAL_DEV
       user: <USERNAME>
-      password: <PASSWORD>
-      region: <REGION>
-      database: CORE_DEV
-      warehouse: <WAREHOUSE>
+      authenticator: externalbrowser
+      region: us-east-1
+      database: {{ CHAIN }}_DEV
+      warehouse: DBT
       schema: silver
-      threads: 12
+      threads: 4
       client_session_keep_alive: False
-      query_tag: <TAG>
+      query_tag: dbt_<user>_dev
+
     prod:
       type: snowflake
       account: <ACCOUNT>
-      role: <ROLE>
+      role: DBT_CLOUD_{{ CHAIN }}
       user: <USERNAME>
-      password: <PASSWORD>
-      region: <REGION>
-      database: CORE
-      warehouse: <WAREHOUSE>
+      authenticator: externalbrowser
+      region: us-east-1
+      database: {{ CHAIN }}
+      warehouse: DBT_CLOUD_{{ CHAIN }}
       schema: silver
-      threads: 12
+      threads: 4
       client_session_keep_alive: False
-      query_tag: <TAG>
+      query_tag: dbt_<user>_dev
 ```
 
-### Variables
+### Common DBT Run Variables
 
-To control the creation of UDF or SP macros with dbt run:
-* UPDATE_UDFS_AND_SPS
-When True, executes all macros included in the on-run-start hooks within dbt_project.yml on model run as normal
-When False, none of the on-run-start macros are executed on model run
+The following variables can be used to control various aspects of the dbt run. Use them with the `--vars` flag when running dbt commands.
 
-Default values are False
+| Variable | Description | Example Usage |
+|----------|-------------|---------------|
+| `UPDATE_UDFS_AND_SPS` | Update User Defined Functions and Stored Procedures. By default, this is set to False | `--vars '{"UPDATE_UDFS_AND_SPS":true}'` |
+| `STREAMLINE_INVOKE_STREAMS` | Invoke Streamline processes. By default, this is set to False | `--vars '{"STREAMLINE_INVOKE_STREAMS":true}'` |
+| `STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES` | Use development environment for external tables. By default, this is set to False | `--vars '{"STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES":true}'` |
+| `HEAL_CURATED_MODEL` | Heal specific curated models. By default, this is set to an empty array []. See more below. | `--vars '{"HEAL_CURATED_MODEL":["axelar","across","celer_cbridge"]}'` |
+| `UPDATE_SNOWFLAKE_TAGS` | Control updating of Snowflake tags. By default, this is set to False | `--vars '{"UPDATE_SNOWFLAKE_TAGS":false}'` |
+| `START_GHA_TASKS` | Start GitHub Actions tasks. By default, this is set to False | `--vars '{"START_GHA_TASKS":true}'` |
 
-* Usage:
-dbt run --vars '{"UPDATE_UDFS_AND_SPS":True}'  -m ...
+#### Example Commands
+
+1. Update UDFs and SPs:
+   ```
+   dbt run --vars '{"UPDATE_UDFS_AND_SPS":true}' -m ...
+   ```
+
+2. Invoke Streamline and use dev for external tables:
+   ```
+   dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":true,"STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES":true}' -m ...
+   ```
+
+3. Heal specific curated models:
+   ```
+   dbt run --vars '{"HEAL_CURATED_MODEL":["axelar","across","celer_cbridge"]}' -m ...
+   ```
+
+4. Update Snowflake tags for a specific model:
+   ```
+   dbt run --vars '{"UPDATE_SNOWFLAKE_TAGS":true}' -s models/silver/utilities/silver__number_sequence.sql
+   ```
+
+5. Start GHA tasks:
+   ```
+   dbt seed -s github_actions__workflows && dbt run -m models/github_actions --full-refresh && dbt run-operation fsc_utils.create_gha_tasks --vars '{"START_GHA_TASKS":True}'
+   ```
+
+> Note: Replace `-m ...` with appropriate model selections or tags as needed for your project structure.
+
+### Healing Curated Models
 
 To reload records in a curated complete table without a full-refresh, such as `silver_bridge.complete_bridge_activity`:
 * HEAL_CURATED_MODEL
@@ -57,14 +90,6 @@ Example set up: `{% if is_incremental() and 'axelar' not in var('HEAL_CURATED_MO
 * Usage:
 Single CTE: dbt run --vars '{"HEAL_CURATED_MODEL":"axelar"}' -m ...
 Multiple CTEs: dbt run --vars '{"HEAL_CURATED_MODEL":["axelar","across","celer_cbridge"]}' -m ...
-
-
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
 
 ## Applying Model Tags
 
@@ -98,12 +123,12 @@ To add/update a model's snowflake tags, add/modify the `meta` model property und
 By default, model tags are pushed to Snowflake on each load. You can disable this by setting the `UPDATE_SNOWFLAKE_TAGS` project variable to `False` during a run.
 
 ```
-dbt run --vars '{"UPDATE_SNOWFLAKE_TAGS":False}' -s models/testnet/testnet__fact_blocks.sql
+dbt run --vars '{"UPDATE_SNOWFLAKE_TAGS":False}' -s models/silver/utilities/silver__number_sequence.sql
 ```
 
 ### Querying for existing tags on a model in snowflake
 
 ```
 select *
-from table(core.information_schema.tag_references('core.testnet.fact_blocks', 'table'));
+from table({{ chain }}.information_schema.tag_references('{{ chain }}.core.fact_blocks', 'table'));
 ```

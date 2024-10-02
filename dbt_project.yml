@@ -100,6 +100,7 @@ vars:
 
 #### FSC_EVM BEGIN ####
 
+  PROD_DB_NAME: 'core'
   API_URL: '{Service}/{Authentication}'
   VAULT_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   START_UP_BLOCK: 17962900 ### OPTIONAL, default is 0
