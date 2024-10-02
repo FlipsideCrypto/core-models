@@ -103,8 +103,11 @@ vars:
   PROD_DB_NAME: 'core'
   API_URL: '{Service}/{Authentication}'
   VAULT_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
+  BLOCKS_PER_HOUR: 1200
+  BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill
   START_UP_BLOCK: 17962900 ### OPTIONAL, default is 0
   MAX_SEQUENCE_NUMBER: 50000000 ### OPTIONAL, default is 100000000 blocks. 
+  USES_RECEIPTS_BY_HASH: True
 
 #### FSC_EVM END ####
 
