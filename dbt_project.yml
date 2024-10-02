@@ -118,7 +118,7 @@ vars:
   BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800
   BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800
   BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
-  ### BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, this is the default value
+  ### BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, desc is default for realtime and asc is default for history
   ### BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
   ### BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
 
@@ -132,9 +132,6 @@ vars:
   RECEIPTS_REALTIME_PRODUCER_BATCH_SIZE: 800
   RECEIPTS_REALTIME_WORKER_BATCH_SIZE: 800
   RECEIPTS_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
-  ### RECEIPTS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, this is the default value
-  ### RECEIPTS_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
-  ### RECEIPTS_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
 
 ### TRACES
 
@@ -146,9 +143,6 @@ vars:
   TRACES_REALTIME_PRODUCER_BATCH_SIZE: 800
   TRACES_REALTIME_WORKER_BATCH_SIZE: 800
   TRACES_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
-  ### TRACES_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, this is the default value
-  ### TRACES_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
-  ### TRACES_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
 
 ### CONFIRM BLOCKS
 
@@ -158,8 +152,5 @@ vars:
   CONFIRM_BLOCKS_REALTIME_PRODUCER_BATCH_SIZE: 800
   CONFIRM_BLOCKS_REALTIME_WORKER_BATCH_SIZE: 800
   CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True ### OPTIONAL, default is False
-  ### CONFIRM_BLOCKS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### OPTIONAL, this is the default value
-  ### CONFIRM_BLOCKS_REALTIME_TESTING_LIMIT: 3 ### OPTIONAL, meant for testing purposes only
-  ### CONFIRM_BLOCKS_REALTIME_QUANTUM_STATE: 'streamline' ### OPTIONAL, default is 'streamline'
 
 #### STREAMLINE PARAMETERS END ####
