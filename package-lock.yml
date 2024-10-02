@@ -10,7 +10,7 @@ packages:
 - package: get-select/dbt_snowflake_query_tags
   version: 2.5.0
 - git: https://github.com/FlipsideCrypto/fsc-evm.git
-  revision: 4f108538747c551ce55b3306065a264640bf986f
+  revision: 3eb5de43fc91d4ae3a3940e68d6a564b8f981b88
 - package: calogica/dbt_date
   version: 0.7.2
 - git: https://github.com/FlipsideCrypto/livequery-models.git
