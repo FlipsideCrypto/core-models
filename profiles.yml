@@ -1,4 +1,4 @@
-core:
+"{{ env_var('CHAIN') }}":
   target: prod
   outputs:
     dev:
@@ -13,7 +13,7 @@ core:
       schema: SILVER
       threads: 4
       client_session_keep_alive: False
-      query_tag: core_curator
+      query_tag: curator
     prod:
       type: snowflake
       account: "{{ env_var('ACCOUNT') }}"
@@ -26,6 +26,6 @@ core:
       schema: SILVER
       threads: 4
       client_session_keep_alive: False
-      query_tag: core_curator
+      query_tag: curator
   config:
     send_anonymous_usage_stats: False
