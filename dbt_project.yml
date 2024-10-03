@@ -1,0 +1,142 @@
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: "core_models"
+version: "1.0.0"
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: "core"
+
+# These configurations specify where dbt should look for different types of files.
+# The `source-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analysis"]
+test-paths: ["tests"]
+seed-paths: ["data"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target" # directory which will store compiled SQL files
+clean-targets: # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_modules"
+  - "dbt_packages"
+
+tests:
+  +store_failures: true # all tests
+
+on-run-start:
+  - "{{ create_sps() }}"
+  - "{{ create_udfs() }}"
+
+on-run-end:
+  - '{{ apply_meta_as_tags(results) }}'
+
+dispatch:
+  - macro_namespace: dbt
+    search_order:
+      - core-models
+      - dbt_snowflake_query_tags
+      - dbt
+
+query-comment:
+  comment: '{{ dbt_snowflake_query_tags.get_query_comment(node) }}'
+  append: true # Snowflake removes prefixed comments.
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+
+models:
+  +copy_grants: true
+  +persist_docs:
+    relation: true
+    columns: true
+  +on_schema_change: "append_new_columns"
+  
+  livequery_models:
+    +materialized: ephemeral
+
+# In this example config, we tell dbt to build all models in the example/ directory
+# as tables. These settings can be overridden in the individual model files
+# using the `{{ config(...) }}` macro.
+
+vars:
+  "dbt_date:time_zone": GMT
+  STREAMLINE_INVOKE_STREAMS: False
+  STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES: False
+  UPDATE_UDFS_AND_SPS: False
+  UPDATE_SNOWFLAKE_TAGS: True
+  OBSERV_FULL_TEST: False
+  WAIT: 0
+  HEAL_MODEL: False
+  HEAL_MODELS: []
+  START_GHA_TASKS: False
+
+
+#### STREAMLINE 2.0 BEGIN ####
+
+  API_INTEGRATION: '{{ var("config")[target.name]["API_INTEGRATION"] if var("config")[target.name] else var("config")["dev"]["API_INTEGRATION"] }}'
+  EXTERNAL_FUNCTION_URI: '{{ var("config")[target.name]["EXTERNAL_FUNCTION_URI"] if var("config")[target.name] else var("config")["dev"]["EXTERNAL_FUNCTION_URI"] }}'
+  ROLES: |
+    ["INTERNAL_DEV"]
+
+  config:
+  # The keys correspond to dbt profiles and are case sensitive
+    dev:
+      API_INTEGRATION: AWS_CORE_API_STG_V2
+      EXTERNAL_FUNCTION_URI: jxvwlr7746.execute-api.us-east-1.amazonaws.com/stg/
+      ROLES:
+        - AWS_LAMBDA_CORE_API
+        - INTERNAL_DEV
+
+    prod:
+      API_INTEGRATION: AWS_CORE_API_PROD_V2
+      EXTERNAL_FUNCTION_URI: 5foaq9dteg.execute-api.us-east-1.amazonaws.com/prod/
+      ROLES:
+        - AWS_LAMBDA_CORE_API
+        - INTERNAL_DEV
+        - DBT_CLOUD_CORE
+
+#### STREAMLINE 2.0 END ####
+
+#### FSC_EVM BEGIN ####
+
+  ### GLOBAL VARIABLES
+  PROD_DB_NAME: 'core'
+  API_URL: '{Service}/{Authentication}'
+  VAULT_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
+  BLOCKS_PER_HOUR: 1200
+
+  ### OPTIONAL
+  USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
+  BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill (move comment to wiki)
+  START_UP_BLOCK: 18224884 ### default is 0 (move comment to wiki)
+  MAX_SEQUENCE_NUMBER: 50000000 ### default is 100000000 blocks. (move comment to wiki)
+
+#### FSC_EVM END ####
+
+#### STREAMLINE PARAMETERS BEGIN - SEE abc.xyz FOR ALL AVAILABLE PARAMETERS ####
+
+  ### OPTIONAL 
+  BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  RECEIPTS_BY_HASH_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  TRACES_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  
+#### STREAMLINE PARAMETERS END ####
+
+# MOVE TO WIKI AND DOCUMENT THOROUGHLY, THEN REMOVE FROM HERE
+  # BLOCKS_TRANSACTIONS_REALTIME_SQL_LIMIT: 4800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR / lambdas in model config (1 for all models, 2 for traces and block receipts) (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### desc is default for realtime and asc is default for history (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### meant for testing purposes only (move comment to wiki)
+  # BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### default is 'streamline' (move comment to wiki)
+
+# document sample Variable Name Format 
+  # <model_name>_<model_type>_<parameter_name>
+  # <parameter_name> If only supplied, global parameter. Required for all variables.
+  # <model_type> could be realtime, history, complete, etc., if applicable
+  # <model_name> is the name of the model, if applicable

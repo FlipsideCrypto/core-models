@@ -1,0 +1,20 @@
+version: 2 
+
+sources:
+  - name: github_actions
+    database: "{{ target.database }}"
+    schema: github_actions
+    tables:
+      - name: workflows
+  - name: bronze_streamline
+    database: streamline
+    schema: >-
+      {{ var('PROD_DB_NAME') ~ ('_dev' if 'dev' in target.name or var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else '') }}
+    tables:
+      - name: blocks
+      - name: transactions
+      - name: >-
+          {{ 'receipts_by_hash' if var("USES_RECEIPTS_BY_HASH", False) else 'receipts' }}
+      - name: traces
+      - name: confirm_blocks
+      - name: decoded_logs
