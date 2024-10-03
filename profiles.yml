@@ -1,6 +1,4 @@
-{% set chain = env_var('CHAIN', 'default_chain') %}
-
-{{ chain }}:
+core:
   target: prod
   outputs:
     dev:
