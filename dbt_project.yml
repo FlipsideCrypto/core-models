@@ -103,7 +103,7 @@ vars:
 
 #### FSC_EVM BEGIN ####
 
-  ### ALWAYS REQUIRED
+  ### GLOBAL VARIABLES
   PROD_DB_NAME: 'core'
   API_URL: '{Service}/{Authentication}'
   VAULT_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
