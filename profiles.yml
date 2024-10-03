@@ -1,4 +1,4 @@
-"{{ env_var('CHAIN') }}":
+{{ env_var('CHAIN') }}:
   target: prod
   outputs:
     dev:
