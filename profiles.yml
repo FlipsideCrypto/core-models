@@ -1,4 +1,6 @@
-{{ env_var('CHAIN') }}:
+{% set chain = env_var('CHAIN', 'default_chain') %}
+
+{{ chain }}:
   target: prod
   outputs:
     dev:
