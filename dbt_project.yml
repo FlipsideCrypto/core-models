@@ -105,11 +105,11 @@ vars:
 
   ### GLOBAL VARIABLES
   PROD_DB_NAME: 'core'
-  API_URL: '{Service}/{Authentication}'
-  VAULT_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
+  NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   BLOCKS_PER_HOUR: 1200
 
   ### OPTIONAL
+  # NODE_URL: '{Service}/{Authentication}' is default
   USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
   BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill (move comment to wiki)
   START_UP_BLOCK: 18224884 ### default is 0 (move comment to wiki)
