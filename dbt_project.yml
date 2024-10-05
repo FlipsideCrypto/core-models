@@ -58,10 +58,6 @@ models:
   livequery_models:
     +materialized: ephemeral
 
-# In this example config, we tell dbt to build all models in the example/ directory
-# as tables. These settings can be overridden in the individual model files
-# using the `{{ config(...) }}` macro.
-
 vars:
   "dbt_date:time_zone": GMT
   STREAMLINE_INVOKE_STREAMS: False
@@ -73,7 +69,6 @@ vars:
   HEAL_MODEL: False
   HEAL_MODELS: []
   START_GHA_TASKS: False
-
 
 #### STREAMLINE 2.0 BEGIN ####
 
@@ -105,12 +100,13 @@ vars:
 
   ### GLOBAL VARIABLES
   PROD_DB_NAME: 'core'
-  API_URL: '{Service}/{Authentication}'
-  VAULT_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
+  NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   BLOCKS_PER_HOUR: 1200
 
   ### OPTIONAL
+  # NODE_URL: '{Service}/{Authentication}' is default
   USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
+  AVG_TXS_PER_BLOCK: 20 ### only used if USES_RECEIPTS_BY_HASH is True (move comment to wiki)
   BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill (move comment to wiki)
   START_UP_BLOCK: 18224884 ### default is 0 (move comment to wiki)
   MAX_SEQUENCE_NUMBER: 50000000 ### default is 100000000 blocks. (move comment to wiki)
