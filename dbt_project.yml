@@ -108,7 +108,7 @@ vars:
   USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
   AVG_TXS_PER_BLOCK: 20 ### only used if USES_RECEIPTS_BY_HASH is True (move comment to wiki)
   BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill (move comment to wiki)
-  START_UP_BLOCK: 18340789 ### default is 0 (move comment to wiki)
+  START_UP_BLOCK: 18342667 ### default is 0 (move comment to wiki)
   MAX_SEQUENCE_NUMBER: 50000000 ### default is 100000000 blocks. (move comment to wiki)
 
 #### FSC_EVM END ####
