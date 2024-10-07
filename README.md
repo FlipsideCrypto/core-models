@@ -100,11 +100,11 @@ Multiple CTEs: dbt run --vars '{"HEAL_CURATED_MODEL":["axelar","across","celer_c
 
 ### Database / Schema level tags
 
-Database and schema tags are applied via the `add_database_or_schema_tags` macro.  These tags are inherited by their downstream objects.  To add/modify tags call the appropriate tag set function within the macro.
+Database and schema tags are applied via the `fsc_evm.add_database_or_schema_tags` macro.  These tags are inherited by their downstream objects.  To add/modify tags call the appropriate tag set function within the macro.
 
 ```
-{{ set_database_tag_value('SOME_DATABASE_TAG_KEY','SOME_DATABASE_TAG_VALUE') }}
-{{ set_schema_tag_value('SOME_SCHEMA_TAG_KEY','SOME_SCHEMA_TAG_VALUE') }}
+{{ fsc_evm.set_database_tag_value('SOME_DATABASE_TAG_KEY','SOME_DATABASE_TAG_VALUE') }}
+{{ fsc_evm.set_schema_tag_value('SOME_SCHEMA_TAG_KEY','SOME_SCHEMA_TAG_VALUE') }}
 ```
 
 ### Model tags
