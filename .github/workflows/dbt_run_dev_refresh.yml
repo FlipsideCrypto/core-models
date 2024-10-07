@@ -44,7 +44,7 @@ jobs:
           dbt deps
       - name: Run Dev Refresh
         run: |
-          dbt run-operation run_sp_create_prod_clone
+          dbt run-operation fsc_evm.run_sp_create_prod_clone
 
   run_dbt_jobs_udfs:
     runs-on: ubuntu-latest
