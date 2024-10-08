@@ -18,3 +18,8 @@ sources:
       - name: traces
       - name: confirm_blocks
       - name: decoded_logs
+  - name: crosschain_silver
+    database: "{{ 'crosschain' if target.database.upper() == var('PROD_DB_NAME').upper() else 'crosschain_dev' }}"
+    schema: silver
+    tables:
+      - name: labels_combined
