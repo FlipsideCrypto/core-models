@@ -31,4 +31,7 @@ else
 	dbt run-operation fsc_utils.create_gha_tasks --vars '{"START_GHA_TASKS":True}' -t $(DBT_TARGET)
 endif
 
-.PHONY: deploy_streamline_functions deploy_streamline_tables deploy_streamline_requests deploy_github_actions cleanup_time
+run_regular_incremental:
+	dbt run -m "fsc_evm,tag:silver" "fsc_evm,tag:gold" -t $(DBT_TARGET)
+
+.PHONY: deploy_streamline_functions deploy_streamline_tables deploy_streamline_requests deploy_github_actions cleanup_time run_regular_incremental

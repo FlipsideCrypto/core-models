@@ -105,11 +105,14 @@ vars:
 
   ### OPTIONAL
   # NODE_URL: '{Service}/{Authentication}' is default
+  # PROD_NETWORK: 'mainnet' ### default is 'mainnet' (move comment to wiki)
   USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
+  USES_BASE_FEE: False ### default is True (move comment to wiki)
   AVG_TXS_PER_BLOCK: 20 ### only used if USES_RECEIPTS_BY_HASH is True (move comment to wiki)
   BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill (move comment to wiki)
   START_UP_BLOCK: 18343780 ### default is 0 (move comment to wiki)
   MAX_SEQUENCE_NUMBER: 50000000 ### default is 100000000 blocks. (move comment to wiki)
+  TRACES_FULL_RELOAD_START_BLOCK: 20000000 ### default is 0 (move comment to wiki)
 
 #### FSC_EVM END ####
 
