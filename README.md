@@ -4,36 +4,36 @@
 ----
 
 ```yml
-{{ chain }}: -- replace {{ chain }}/{{ CHAIN }} with the profile or name from, remove this comment in your yml
+<chain>: -- replace <chain>/<CHAIN> with the profile or name from, remove this comment in your yml
   target: dev
   outputs:
     dev:
       type: snowflake
-      account: {{ ACCOUNT }}
+      account: <ACCOUNT>
       role: INTERNAL_DEV
-      user: {{ USERNAME }}
+      user: <USERNAME>
       authenticator: externalbrowser
       region: us-east-1
-      database: {{ CHAIN }}_DEV
+      database: <CHAIN>_DEV
       warehouse: DBT
       schema: silver
       threads: 4
       client_session_keep_alive: False
-      query_tag: dbt_{{ USERNAME }}_dev
+      query_tag: dbt_<USERNAME>_dev
 
     prod:
       type: snowflake
-      account: {{ ACCOUNT }}
-      role: DBT_CLOUD_{{ CHAIN }}
-      user: {{ USERNAME }}
+      account: <ACCOUNT>
+      role: DBT_CLOUD_<CHAIN>
+      user: <USERNAME>
       authenticator: externalbrowser
       region: us-east-1
-      database: {{ CHAIN }}
-      warehouse: DBT_CLOUD_{{ CHAIN }}
+      database: <CHAIN>
+      warehouse: DBT_CLOUD_<CHAIN>
       schema: silver
       threads: 4
       client_session_keep_alive: False
-      query_tag: dbt_{{ USERNAME }}_dev
+      query_tag: dbt_<USERNAME>_dev
 ```
 
 ### Common DBT Run Variables
@@ -90,7 +90,14 @@ To reload records in a curated complete table without a full-refresh, such as `s
 Default is an empty array []
 When item is included in var array [], incremental logic will be skipped for that CTE / code block  
 When item is not included in var array [] or does not match specified item in model, incremental logic will apply
-Example set up: `{% if is_incremental() and 'axelar' not in var('HEAL_CURATED_MODEL') %}`
+Example set up: 
+```sql
+{% raw %}
+{% if is_incremental() and 'axelar' not in var('HEAL_CURATED_MODEL') %}
+  -- Your incremental logic here
+{% endif %}
+{% endraw %}
+```
 
 * Usage:
 Single CTE: dbt run --vars '{"HEAL_CURATED_MODEL":"axelar"}' -m ...
@@ -135,5 +142,5 @@ dbt run --vars '{"UPDATE_SNOWFLAKE_TAGS":False}' -s models/silver/utilities/silv
 
 ```
 select *
-from table({{ chain }}.information_schema.tag_references('{{ chain }}.core.fact_blocks', 'table'));
+from table(<chain>.information_schema.tag_references('<chain>.core.fact_blocks', 'table'));
 ```
