@@ -83,23 +83,11 @@ The following variables can be used to control various aspects of the dbt run. U
 
 > Note: Replace `-m ...` with appropriate model selections or tags as needed for your project structure.
 
-### Healing Curated Models
+## FSC_EVM
 
-To reload records in a curated complete table without a full-refresh, such as `silver_bridge.complete_bridge_activity`:
-* HEAL_CURATED_MODEL
-Default is an empty array []
-When item is included in var array [], incremental logic will be skipped for that CTE / code block  
-When item is not included in var array [] or does not match specified item in model, incremental logic will apply
-Example set up: 
-```
-{% if is_incremental() and 'axelar' not in var('HEAL_CURATED_MODEL') %}
-  -- Your incremental logic here
-{% endif %}
-```
+`fsc_evm` is a collection of macros, models, and other resources that are used to build the Flipside Crypto EVM models.
 
-* Usage:
-Single CTE: dbt run --vars '{"HEAL_CURATED_MODEL":"axelar"}' -m ...
-Multiple CTEs: dbt run --vars '{"HEAL_CURATED_MODEL":["axelar","across","celer_cbridge"]}' -m ...
+For more information on the `fsc_evm` package, see the [FSC_EVMWiki](https://github.com/FlipsideCrypto/fsc-evm/wiki).
 
 ## Applying Model Tags
 
