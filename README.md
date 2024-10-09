@@ -111,7 +111,7 @@ Database and schema tags are applied via the `fsc_evm.add_database_or_schema_tag
 
 To add/update a model's snowflake tags, add/modify the `meta` model property under `config`.  Only table level tags are supported at this time via DBT.
 
-```
+{% raw %}
 {{ config(
     ...,
     meta={
@@ -123,7 +123,7 @@ To add/update a model's snowflake tags, add/modify the `meta` model property und
     },
     ...
 ) }}
-```
+{% endraw %}
 
 By default, model tags are pushed to Snowflake on each load. You can disable this by setting the `UPDATE_SNOWFLAKE_TAGS` project variable to `False` during a run.
 
