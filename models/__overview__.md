@@ -39,7 +39,7 @@ The Core models are built a few different ways, but the core fact tables are bui
 
 - Bronze: Data is loaded in from the source as a view
 - Silver: All necessary parsing, filtering, de-duping, and other transformations are done here
-- Gold (or core): Final views and tables that are available publicly
+- Gold (or Core): Final views and tables that are available publicly
 
 The dimension tables are sourced from a variety of on-chain and off-chain sources.
 
