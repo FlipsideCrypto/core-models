@@ -51,12 +51,12 @@ jobs:
           git checkout -B docs origin/main
 
       - name: generate dbt docs
-        run: dbt docs generate
+        run: dbt docs generate -t prod
 
       - name: move files to docs directory
         run: |
           mkdir -p ./docs
-          cp target/{catalog.json,manifest.json,index.html} docs/
+          cp -r target/* docs/
 
       - name: clean up target directory
         run: dbt clean
