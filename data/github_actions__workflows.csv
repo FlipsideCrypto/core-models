@@ -1,2 +1,3 @@
 workflow_name,workflow_schedule
 dbt_run_streamline_chainhead,"23,53 * * * *"
+dbt_run_scheduled_core,"1,31 * * * *"
