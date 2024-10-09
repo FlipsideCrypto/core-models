@@ -91,12 +91,10 @@ Default is an empty array []
 When item is included in var array [], incremental logic will be skipped for that CTE / code block  
 When item is not included in var array [] or does not match specified item in model, incremental logic will apply
 Example set up: 
-```sql
-{% raw %}
+```
 {% if is_incremental() and 'axelar' not in var('HEAL_CURATED_MODEL') %}
   -- Your incremental logic here
 {% endif %}
-{% endraw %}
 ```
 
 * Usage:
