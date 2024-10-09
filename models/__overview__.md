@@ -19,13 +19,13 @@ There is more information on how to use dbt docs in the last section of this doc
 ### Core Tables (core.core)
 
 **Dimension Tables:**
-- [dim_labels](https://flipsidecrypto.github.io/fsc_evm/#!/model/model.fsc_evm.core__dim_labels)
+- [dim_labels](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__dim_labels)
 
 **Fact Tables:**
-- [fact_blocks](https://flipsidecrypto.github.io/fsc_evms/#!/model/model.fsc_evm.core__fact_blocks)
-- [fact_event_logs](https://flipsidecrypto.github.io/fsc_evms/#!/model/model.fsc_evm.core__fact_event_logs)
-- [fact_transactions](https://flipsidecrypto.github.io/fsc_evms/#!/model/model.fsc_evm.core__fact_transactions)
-- [fact_traces](https://flipsidecrypto.github.io/fsc_evms/#!/model/model.fsc_evm.core__fact_traces)
+- [fact_blocks](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_blocks)
+- [fact_event_logs](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_event_logs)
+- [fact_transactions](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_transactions)
+- [fact_traces](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_traces)
 
 ## **Helpful User-Defined Functions (UDFs)**
 
