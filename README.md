@@ -4,36 +4,36 @@
 ----
 
 ```yml
-{{ chain }}: -- replace {{ chain }}/{{ CHAIN }} with the profile or name from, remove this comment in your yml
+<chain>: -- replace <chain>/<CHAIN> with the profile or name from, remove this comment in your yml
   target: dev
   outputs:
     dev:
       type: snowflake
-      account: {{ ACCOUNT }}
+      account: <ACCOUNT>
       role: INTERNAL_DEV
-      user: {{ USERNAME }}
+      user: <USERNAME>
       authenticator: externalbrowser
       region: us-east-1
-      database: {{ CHAIN }}_DEV
+      database: <CHAIN>_DEV
       warehouse: DBT
       schema: silver
       threads: 4
       client_session_keep_alive: False
-      query_tag: dbt_{{ USERNAME }}_dev
+      query_tag: dbt_<USERNAME>_dev
 
     prod:
       type: snowflake
-      account: {{ ACCOUNT }}
-      role: DBT_CLOUD_{{ CHAIN }}
-      user: {{ USERNAME }}
+      account: <ACCOUNT>
+      role: DBT_CLOUD_<CHAIN>
+      user: <USERNAME>
       authenticator: externalbrowser
       region: us-east-1
-      database: {{ CHAIN }}
-      warehouse: DBT_CLOUD_{{ CHAIN }}
+      database: <CHAIN>
+      warehouse: DBT_CLOUD_<CHAIN>
       schema: silver
       threads: 4
       client_session_keep_alive: False
-      query_tag: dbt_{{ USERNAME }}_dev
+      query_tag: dbt_<USERNAME>_dev
 ```
 
 ### Common DBT Run Variables
@@ -142,5 +142,5 @@ dbt run --vars '{"UPDATE_SNOWFLAKE_TAGS":False}' -s models/silver/utilities/silv
 
 ```
 select *
-from table({{ chain }}.information_schema.tag_references('{{ chain }}.core.fact_blocks', 'table'));
+from table(<chain>.information_schema.tag_references('<chain>.core.fact_blocks', 'table'));
 ```
