@@ -23,3 +23,9 @@ sources:
     schema: silver
     tables:
       - name: labels_combined
+      - name: complete_provider_asset_metadata
+      - name: complete_native_asset_metadata
+      - name: complete_native_prices
+      - name: complete_provider_prices
+      - name: complete_token_asset_metadata
+      - name: complete_token_prices
