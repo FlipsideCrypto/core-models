@@ -101,13 +101,14 @@ vars:
 
 #### FSC_EVM BEGIN ####
 
-  ### GLOBAL VARIABLES
+  ### GLOBAL VARIABLES BEGIN ###
+  ## REQUIRED
   GLOBAL_PROD_DB_NAME: 'core'
   GLOBAL_NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   GLOBAL_BLOCKS_PER_HOUR: 1200
-  GLOBAL_STREAMLINE_MIGRATION: False
+  GLOBAL_USES_STREAMLINE_V1: False
 
-  ### OPTIONAL
+  ## OPTIONAL
   # GLOBAL_NODE_URL: '{Service}/{Authentication}' is default
   # GLOBAL_PROD_NETWORK: 'mainnet' ### default is 'mainnet' (move comment to wiki)
   GLOBAL_USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
@@ -117,40 +118,55 @@ vars:
   GLOBAL_START_UP_BLOCK: 18343780 ### default is 0 (move comment to wiki)
   GLOBAL_MAX_SEQUENCE_NUMBER: 50000000 ### default is 100000000 blocks. (move comment to wiki)
 
-  ### CORE MODEL PARAMETERS BEGIN ###
+  ### GLOBAL VARIABLES END ###
 
+  ### CORE_PACKAGE VARIABLES BEGIN ###
+
+  ### CORE ###
+  ## REQUIRED
   TRACES_FULL_RELOAD_START_BLOCK: 20000000 ### default is 0 (move comment to wiki)
 
   ### PRICES ###
-  PRICES_SYMBOLS: 'CORE' ### REQUIRED 
-  PRICES_PLATFORMS: ['Core', 'core'] ### REQUIRED
-  # PRICES_BLOCKCHAINS: ### OPTIONAL (defaults to 'GLOBAL_PROD_DB_NAME')
-  # PRICES_TOKEN_ADDRESSES: ### OPTIONAL
+  ## REQUIRED
+  PRICES_SYMBOLS: 'CORE'
+  PRICES_PLATFORMS: ['Core', 'core']
+
+  ## OPTIONAL
+  # PRICES_BLOCKCHAINS: ### (defaults to 'GLOBAL_PROD_DB_NAME')
+  # PRICES_TOKEN_ADDRESSES: 
   
   ### LABELS ###
-  # LABELS_BLOCKCHAINS: ### OPTIONAL (defaults to 'GLOBAL_PROD_DB_NAME')
+  ## OPTIONAL
+  # LABELS_BLOCKCHAINS: ### (defaults to 'GLOBAL_PROD_DB_NAME')
 
-  ### CORE MODEL PARAMETERS END ###
+  ### CORE_PACKAGE VARIABLES END ###
 
-#### FSC_EVM END ####
+  ### CURATED_PACKAGE VARIABLES BEGIN ###
 
-#### STREAMLINE PARAMETERS BEGIN - SEE abc.xyz FOR ALL AVAILABLE PARAMETERS ####
+  ### STATS ###
+  # STATS_TOKEN_ADDRESS: '' ### REQUIRED
 
-  ### OPTIONAL 
+  ### CURATED_PACKAGE VARIABLES END ###
+
+  ### STREAMLINE VARIABLES BEGIN - SEE abc.xyz FOR ALL AVAILABLE VARIABLES ###
+
+  ## OPTIONAL 
   BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
   RECEIPTS_BY_HASH_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
   TRACES_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
   CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
   
-#### STREAMLINE PARAMETERS END ####
+  ### STREAMLINE VARIABLES END ###
 
-# MOVE TO WIKI AND DOCUMENT THOROUGHLY, THEN REMOVE FROM HERE
-  # BLOCKS_TRANSACTIONS_REALTIME_SQL_LIMIT: 4800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR / lambdas in model config (1 for all models, 2 for traces and block receipts) (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### desc is default for realtime and asc is default for history (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### meant for testing purposes only (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### default is 'streamline' (move comment to wiki)
+  # MOVE TO WIKI AND DOCUMENT THOROUGHLY, THEN REMOVE FROM HERE
+    # BLOCKS_TRANSACTIONS_REALTIME_SQL_LIMIT: 4800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
+    # BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
+    # BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR / lambdas in model config (1 for all models, 2 for traces and block receipts) (move comment to wiki)
+    # BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### desc is default for realtime and asc is default for history (move comment to wiki)
+    # BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### meant for testing purposes only (move comment to wiki)
+    # BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### default is 'streamline' (move comment to wiki)
+
+#### FSC_EVM END ####
 
 # document sample Variable Name Format 
   # <model_name>_<model_type>_<parameter_name>
