@@ -25,7 +25,8 @@ clean-targets: # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 tests:
-  +store_failures: true # all tests
+  core_models:
+    +store_failures: true # all tests
 
 on-run-start:
   - "{{ fsc_evm.create_sps() }}"
@@ -49,14 +50,16 @@ query-comment:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
 models:
-  +copy_grants: true
-  +persist_docs:
-    relation: true
-    columns: true
-  +on_schema_change: "append_new_columns"
-  
+  core_models:
+    +copy_grants: true
+    +persist_docs:
+      relation: true
+      columns: true
+    +on_schema_change: "append_new_columns"
   livequery_models:
     +materialized: ephemeral
+  fsc_evm:
+    +enabled: true
 
 vars:
   "dbt_date:time_zone": GMT
@@ -102,6 +105,7 @@ vars:
   GLOBAL_PROD_DB_NAME: 'core'
   GLOBAL_NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   GLOBAL_BLOCKS_PER_HOUR: 1200
+  GLOBAL_STREAMLINE_MIGRATION: False
 
   ### OPTIONAL
   # GLOBAL_NODE_URL: '{Service}/{Authentication}' is default
