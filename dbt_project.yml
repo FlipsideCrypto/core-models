@@ -102,6 +102,9 @@ vars:
   GLOBAL_PROD_DB_NAME: 'core'
   GLOBAL_NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   GLOBAL_BLOCKS_PER_HOUR: 1200
+  GLOBAL_API_URL: 'https://openapi.coredao.org/api?module=contract&action=getabi&address='
+  GLOBAL_API_SECRET_PATH: 'Vault/prod/block_explorers/core_scan'
+  TEMP_ABI_KEY: '5bf5a2c716f34d0096bfd2f88f8029e4'
 
   ### OPTIONAL
   # GLOBAL_NODE_URL: '{Service}/{Authentication}' is default
@@ -127,6 +130,14 @@ vars:
   # LABELS_BLOCKCHAINS: ### OPTIONAL (defaults to 'GLOBAL_PROD_DB_NAME')
 
   ### CORE MODEL PARAMETERS END ###
+
+  ### ABI ### 
+  API_ABI_ERROR_MESSAGE: "abi_data :error :message :: STRING <> 'Max rate limit reached, please use API Key for higher rate limit!'"
+  API_ABI_INTERACTION_COUNT: 250
+  API_ABI_RELEVANT_CONTRACT_LIMIT: 5
+  API_ABI_BATCH_SIZE: 10  
+  ABI_BLOCK_EXPLORER: 'corescan'
+  ABI_STREAMLINE: False
 
 #### FSC_EVM END ####
 
