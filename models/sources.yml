@@ -29,3 +29,18 @@ sources:
       - name: complete_provider_prices
       - name: complete_token_asset_metadata
       - name: complete_token_prices
+  - name: silver
+    database: "{{ 'core' if target.database.upper() == var('GLOBAL_PROD_DB_NAME').upper() else 'core_dev' }}"
+    schema: silver
+    tables:
+      - name: verified_abis
+  - name: bronze_api
+    database: "{{ 'core' if target.database.upper() == var('GLOBAL_PROD_DB_NAME').upper() else 'core_dev' }}"
+    schema: bronze_api
+    tables:
+      - name: contract_abis
+  - name: crosschain_public
+    database: "{{ 'crosschain' if target.database.upper() == var('GLOBAL_PROD_DB_NAME').upper() else 'crosschain_dev' }}"
+    schema: bronze_public
+    tables:
+      - name: user_abis
