@@ -1,5 +1,5 @@
-name: dbt_run_scheduled_core
-run-name: dbt_run_scheduled_core
+name: dbt_run_streamline_history
+run-name: dbt_run_streamline_history
 
 on:
   workflow_dispatch:
@@ -41,4 +41,4 @@ jobs:
           dbt deps
       - name: Run DBT Jobs
         run: |
-          dbt run -m "fsc_evm,tag:core" "core_models,tag:core"
+          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_core_complete" "fsc_evm,tag:streamline_core_history"
