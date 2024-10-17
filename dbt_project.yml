@@ -59,7 +59,11 @@ models:
   livequery_models:
     +materialized: ephemeral
   fsc_evm:
-    +enabled: true
+    +enabled: false
+    core_package:
+      +enabled: true
+    github_actions_package:
+      +enabled: true
 
 vars:
   "dbt_date:time_zone": GMT
