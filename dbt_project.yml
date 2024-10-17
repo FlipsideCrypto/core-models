@@ -169,4 +169,4 @@ vars:
   # <model_name>_<model_type>_<parameter_name>
   # <parameter_name> If only supplied, global parameter. Required for all variables.
   # <model_type> could be realtime, history, complete, etc., if applicable
-  # <model_name> is the name of the model, if applicabe
+  # <model_name> is the name of the model, if applicable
