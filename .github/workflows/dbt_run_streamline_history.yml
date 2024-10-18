@@ -4,8 +4,8 @@ run-name: dbt_run_streamline_history
 on:
   workflow_dispatch:
   schedule:
-    # Runs at minute 22
-    - cron: '22 */3 * * *'
+    # Runs at minute 22 every 4 hours
+    - cron: '22 */4 * * *'
 
 env:
   DBT_PROFILES_DIR: ./
