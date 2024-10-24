@@ -6,18 +6,7 @@ on:
 
 concurrency: ${{ github.workflow }}
 
-env:
-  WAREHOUSE: "${{ vars.WAREHOUSE }}"
-  
-
 jobs:
-  debug_vars:
-    runs-on: ubuntu-latest
-    environment:  ${{ github.ref == 'refs/heads/main' && 'workflow_prod' || 'workflow_dev' }}
-    steps:
-      - name: Debug warehouse variable
-        run: echo "Warehouse value is '${{ vars.WAREHOUSE }}'"
-
   called_workflow_template:
     uses: FlipsideCrypto/analytics-workflow-templates/.github/workflows/dbt.yml@main
 
@@ -25,5 +14,5 @@ jobs:
       command: >
         dbt test --selector 'integration_tests'
       environment:  ${{ github.ref == 'refs/heads/main' && 'workflow_prod' || 'workflow_dev' }}
-      warehouse: ${{ vars.WAREHOUSE }}
+      warehouse: "${{ vars.WAREHOUSE }}"
     secrets: inherit
