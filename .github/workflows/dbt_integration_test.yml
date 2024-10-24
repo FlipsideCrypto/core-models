@@ -6,6 +6,10 @@ on:
 
 concurrency: ${{ github.workflow }}
 
+env:
+  WAREHOUSE: "${{ vars.WAREHOUSE }}"
+  
+
 jobs:
   debug_vars:
     runs-on: ubuntu-latest
