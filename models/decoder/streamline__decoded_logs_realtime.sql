@@ -10,7 +10,7 @@
         "sql_source" :"{{this.identifier}}" }
     ),
     fsc_utils.if_data_call_wait()],
-    tags = ['streamline_decoded_logs_realtime']
+    tags = ['decoded_logs_realtime']
 ) }}
 
 
@@ -68,4 +68,4 @@ WHERE
 ORDER BY
     block_number DESC
 LIMIT
-    20
+    20000000
