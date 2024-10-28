@@ -110,11 +110,8 @@ vars:
   GLOBAL_PROD_DB_NAME: 'core'
   GLOBAL_NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   GLOBAL_BLOCKS_PER_HOUR: 1200
-  GLOBAL_USES_STREAMLINE_V1: False
 
   ## OPTIONAL
-  # GLOBAL_NODE_URL: '{Service}/{Authentication}' is default
-  # GLOBAL_PROD_NETWORK: 'mainnet' ### default is 'mainnet' (move comment to wiki)
   GLOBAL_USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
   GLOBAL_USES_BASE_FEE: False ### default is True (move comment to wiki)
   GLOBAL_AVG_TXS_PER_BLOCK: 20 ### only used if USES_RECEIPTS_BY_HASH is True (move comment to wiki)
@@ -129,6 +126,12 @@ vars:
   ### CORE ###
   ## REQUIRED
   TRACES_FULL_RELOAD_START_BLOCK: 20000000 ### default is 0 (move comment to wiki)
+
+  ## OPTIONAL 
+  BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  RECEIPTS_BY_HASH_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  TRACES_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
+  CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
 
   ### PRICES ###
   ## REQUIRED
@@ -146,28 +149,4 @@ vars:
 
   ### CURATED_PACKAGE VARIABLES END ###
 
-  ### STREAMLINE VARIABLES BEGIN - SEE abc.xyz FOR ALL AVAILABLE VARIABLES ###
-
-  ## OPTIONAL 
-  BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
-  RECEIPTS_BY_HASH_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
-  TRACES_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
-  CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True ### default is False (move comment to wiki)
-  
-  ### STREAMLINE VARIABLES END ###
-
-  # MOVE TO WIKI AND DOCUMENT THOROUGHLY, THEN REMOVE FROM HERE
-    # BLOCKS_TRANSACTIONS_REALTIME_SQL_LIMIT: 4800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
-    # BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
-    # BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR / lambdas in model config (1 for all models, 2 for traces and block receipts) (move comment to wiki)
-    # BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### desc is default for realtime and asc is default for history (move comment to wiki)
-    # BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### meant for testing purposes only (move comment to wiki)
-    # BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### default is 'streamline' (move comment to wiki)
-
 #### FSC_EVM END ####
-
-# document sample Variable Name Format 
-  # <model_name>_<model_type>_<parameter_name>
-  # <parameter_name> If only supplied, global parameter. Required for all variables.
-  # <model_type> could be realtime, history, complete, etc., if applicable
-  # <model_name> is the name of the model, if applicable
