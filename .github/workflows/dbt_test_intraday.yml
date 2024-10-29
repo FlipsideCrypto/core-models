@@ -44,6 +44,3 @@ jobs:
       - name: Run DBT Jobs
         run: |
           dbt test -m "fsc_evm,tag:recent_test"
-  
-
-
