@@ -1,11 +1,11 @@
-name: dbt_run_scheduled_core
-run-name: dbt_run_scheduled_core
+name: dbt_test_intraday
+run-name: dbt_test_intraday
 
 on:
   workflow_dispatch:
     branches:
       - "main"
-
+    
 env:
   DBT_PROFILES_DIR: ./
 
@@ -21,11 +21,13 @@ env:
 concurrency:
   group: ${{ github.workflow }}
 
+
+  
 jobs:
   run_dbt_jobs:
     runs-on: ubuntu-latest
-    environment:
-      name: workflow_prod
+    environment: 
+      name: workflow_test
 
     steps:
       - uses: actions/checkout@v3
@@ -41,4 +43,7 @@ jobs:
           dbt deps
       - name: Run DBT Jobs
         run: |
-          dbt run -m "fsc_evm,tag:silver_core" "fsc_evm,tag:gold_core" "fsc_evm,tag:silver_prices" "fsc_evm,tag:gold_prices" "fsc_evm,tag:silver_labels" "fsc_evm,tag:gold_labels"
+          dbt test -m "fsc_evm,tag:recent_test"
+  
+
+

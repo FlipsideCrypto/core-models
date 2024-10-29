@@ -42,3 +42,7 @@ jobs:
       - name: Run DBT Jobs
         run: |
           dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_core_complete" "fsc_evm,tag:streamline_core_complete_receipts_by_hash" "fsc_evm,tag:streamline_core_realtime" "fsc_evm,tag:streamline_core_realtime_receipts_by_hash"
+
+      - name: Test Chainhead
+        run: |
+          dbt test -m "fsc_evm,tag:chainhead"
