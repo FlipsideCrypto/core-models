@@ -39,11 +39,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           dbt deps
-
-      - name: Build Full Testing Views
-        run: |
-          dbt run -m "fsc_evm,tag:full_test"
       
-      - name: Test All Data
+      - name: Update Abi Models
         run: |
-          dbt test -m "fsc_evm,tag:silver_abis" "fsc_evm,tag:gold_abis"
+          dbt run -m "fsc_evm,tag:silver_abis" "fsc_evm,tag:gold_abis"
