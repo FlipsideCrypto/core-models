@@ -44,6 +44,6 @@ jobs:
         run: |
           dbt run -m "fsc_evm,tag:daily_test"
       
-      - name: Test Daily Data
+      - name: Run Daily Tests
         run: |
           dbt test -m "fsc_evm,tag:daily_test"
