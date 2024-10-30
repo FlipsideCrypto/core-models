@@ -17,6 +17,7 @@ test-paths: ["tests"]
 seed-paths: ["data"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
+docs-paths: ["dbt_packages/fsc_evm/doc_descriptions", "models/doc_descriptions"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
@@ -25,7 +26,10 @@ clean-targets: # directories to be removed by `dbt clean`
   - "dbt_packages"
 
 tests:
-  +store_failures: true # all tests
+  core_models:
+    +store_failures: true # all tests
+  fsc_evm:
+    +store_failures: true
 
 on-run-start:
   - "{{ fsc_evm.create_sps() }}"
@@ -49,14 +53,28 @@ query-comment:
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 
 models:
-  +copy_grants: true
-  +persist_docs:
-    relation: true
-    columns: true
-  +on_schema_change: "append_new_columns"
-  
+  core_models:
+    +copy_grants: true
+    +persist_docs:
+      relation: true
+      columns: true
+    +on_schema_change: "append_new_columns"
   livequery_models:
     +materialized: ephemeral
+  fsc_evm:
+    +enabled: false
+    main_package:
+      +enabled: false
+      core:
+        +enabled: true
+      github_actions:
+        +enabled: true
+      labels:
+        +enabled: true
+      prices:
+        +enabled: true
+      utils:
+        +enabled: true
 
 vars:
   "dbt_date:time_zone": GMT
@@ -98,46 +116,34 @@ vars:
 
 #### FSC_EVM BEGIN ####
 
-  ### GLOBAL VARIABLES
+  ### GLOBAL VARIABLES BEGIN ###
+  ## REQUIRED
   GLOBAL_PROD_DB_NAME: 'core'
   GLOBAL_NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   GLOBAL_BLOCKS_PER_HOUR: 1200
 
-  ### OPTIONAL
-  # GLOBAL_NODE_URL: '{Service}/{Authentication}' is default
-  # GLOBAL_PROD_NETWORK: 'mainnet' ### default is 'mainnet' (move comment to wiki)
-  GLOBAL_USES_RECEIPTS_BY_HASH: True ### default is False (move comment to wiki)
-  GLOBAL_USES_BASE_FEE: False ### default is True (move comment to wiki)
-  GLOBAL_AVG_TXS_PER_BLOCK: 20 ### only used if USES_RECEIPTS_BY_HASH is True (move comment to wiki)
-  GLOBAL_BLOCKS_TOTAL_TO_BACKFILL: 19000000 ### high estimate for total blocks to backfill (move comment to wiki)
-  GLOBAL_START_UP_BLOCK: 18343780 ### default is 0 (move comment to wiki)
-  GLOBAL_MAX_SEQUENCE_NUMBER: 50000000 ### default is 100000000 blocks. (move comment to wiki)
+  ## OPTIONAL
+  GLOBAL_USES_RECEIPTS_BY_HASH: True
+  GLOBAL_USES_BASE_FEE: False
+  GLOBAL_AVG_TXS_PER_BLOCK: 20
+  GLOBAL_BLOCKS_TOTAL_TO_BACKFILL: 19000000
+  GLOBAL_START_UP_BLOCK: 18343780
+  GLOBAL_MAX_SEQUENCE_NUMBER: 50000000
 
-  ### CORE MODEL PARAMETERS BEGIN ###
+  ### GLOBAL VARIABLES END ###
 
-  TRACES_FULL_RELOAD_START_BLOCK: 20000000 ### default is 0 (move comment to wiki)
+  ### MAIN_PACKAGE VARIABLES BEGIN ###
 
-  ### PRICES ###
-  PRICES_SYMBOLS: 'CORE' ### REQUIRED 
-  PRICES_PLATFORMS: ['Core', 'core'] ### REQUIRED
-  # PRICES_BLOCKCHAINS: ### OPTIONAL (defaults to 'GLOBAL_PROD_DB_NAME')
-  # PRICES_TOKEN_ADDRESSES: ### OPTIONAL
-  
-  ### LABELS ###
-  # LABELS_BLOCKCHAINS: ### OPTIONAL (defaults to 'GLOBAL_PROD_DB_NAME')
+  ### CORE ###
+  ## REQUIRED
+  TRACES_FULL_RELOAD_START_BLOCK: 20000000
 
-  ### CORE MODEL PARAMETERS END ###
-
-#### FSC_EVM END ####
-
-#### STREAMLINE PARAMETERS BEGIN - SEE abc.xyz FOR ALL AVAILABLE PARAMETERS ####
-
-  ### OPTIONAL 
+  ## OPTIONAL 
   BLOCKS_TRANSACTIONS_REALTIME_NEW_BUILD: True
   RECEIPTS_BY_HASH_REALTIME_NEW_BUILD: True
   TRACES_REALTIME_NEW_BUILD: True
   CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True
-  
+
   BLOCKS_TRANSACTIONS_HISTORY_NEW_BUILD: True
 
   RECEIPTS_BY_HASH_HISTORY_NEW_BUILD: True
@@ -153,19 +159,21 @@ vars:
   TRACES_HISTORY_ORDER_BY_CLAUSE: 'ORDER BY partition_key DESC, block_number DESC'
 
   CONFIRM_BLOCKS_HISTORY_NEW_BUILD: True
+
+  ### PRICES ###
+  ## REQUIRED
+  PRICES_NATIVE_SYMBOLS: 'CORE'
+  PRICES_PROVIDER_PLATFORMS: ['Core', 'core']
   
-#### STREAMLINE PARAMETERS END ####
+  ### LABELS ###
 
-# MOVE TO WIKI AND DOCUMENT THOROUGHLY, THEN REMOVE FROM HERE
-  # BLOCKS_TRANSACTIONS_REALTIME_SQL_LIMIT: 4800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_PRODUCER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_WORKER_BATCH_SIZE: 800 ### default is 2 x BLOCKS_PER_HOUR / lambdas in model config (1 for all models, 2 for traces and block receipts) (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_ORDER_BY_CLAUSE: 'ORDER BY partition_key ASC' ### desc is default for realtime and asc is default for history (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3 ### meant for testing purposes only (move comment to wiki)
-  # BLOCKS_TRANSACTIONS_REALTIME_QUANTUM_STATE: 'streamline' ### default is 'streamline' (move comment to wiki)
+  ### MAIN_PACKAGE VARIABLES END ###
 
-# document sample Variable Name Format 
-  # <model_name>_<model_type>_<parameter_name>
-  # <parameter_name> If only supplied, global parameter. Required for all variables.
-  # <model_type> could be realtime, history, complete, etc., if applicable
-  # <model_name> is the name of the model, if applicable
+  ### CURATED_PACKAGE VARIABLES BEGIN ###
+
+  ### STATS ###
+  # STATS_TOKEN_ADDRESS: '' ### REQUIRED
+
+  ### CURATED_PACKAGE VARIABLES END ###
+
+#### FSC_EVM END ####

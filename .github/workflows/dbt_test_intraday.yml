@@ -1,11 +1,11 @@
-name: dbt_run_streamline_history
-run-name: dbt_run_streamline_history
+name: dbt_test_intraday
+run-name: dbt_test_intraday
 
 on:
   workflow_dispatch:
     branches:
       - "main"
-
+    
 env:
   DBT_PROFILES_DIR: ./
 
@@ -21,11 +21,13 @@ env:
 concurrency:
   group: ${{ github.workflow }}
 
+
+  
 jobs:
   run_dbt_jobs:
     runs-on: ubuntu-latest
-    environment:
-      name: workflow_prod
+    environment: 
+      name: workflow_test
 
     steps:
       - uses: actions/checkout@v3
@@ -41,4 +43,4 @@ jobs:
           dbt deps
       - name: Run DBT Jobs
         run: |
-          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_core_complete" "fsc_evm,tag:streamline_core_history" "fsc_evm,tag:streamline_core_complete_receipts_by_hash" "fsc_evm,tag:streamline_core_history_receipts_by_hash"
+          dbt test -m "fsc_evm,tag:recent_test"

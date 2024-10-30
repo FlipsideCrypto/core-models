@@ -1,5 +1,5 @@
-name: dbt_run_scheduled_core
-run-name: dbt_run_scheduled_core
+name: dbt_run_scheduled_main
+run-name: dbt_run_scheduled_main
 
 on:
   workflow_dispatch:
@@ -41,4 +41,4 @@ jobs:
           dbt deps
       - name: Run DBT Jobs
         run: |
-          dbt run -m "fsc_evm,tag:core" "core_models,tag:core"
+          dbt run -m "core_models,tag:core" "fsc_evm,tag:silver_core" "fsc_evm,tag:gold_core" "fsc_evm,tag:silver_prices" "fsc_evm,tag:gold_prices" "fsc_evm,tag:silver_labels" "fsc_evm,tag:gold_labels"
