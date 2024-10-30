@@ -42,7 +42,7 @@ jobs:
           pip install -r requirements.txt
           dbt deps
 
-      - name: Built Test Models
+      - name: Built Testing Views
         run: |
           dbt run -m "fsc_evm,tag:recent_test" "fsc_evm,tag:full_test"
       
