@@ -42,7 +42,7 @@ jobs:
 
       - name: Build Testing Views
         run: |
-          dbt run -m "fsc_evm,tag:intraday_test"
+          dbt run -m "fsc_evm,tag:recent_test"
       
       - name: Run Intraday Tests
         run: |
