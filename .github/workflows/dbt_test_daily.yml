@@ -1,11 +1,11 @@
-name: dbt_run_scheduled_main
-run-name: dbt_run_scheduled_main
+name: dbt_test_daily
+run-name: dbt_test_daily
 
 on:
   workflow_dispatch:
     branches:
       - "main"
-
+    
 env:
   DBT_PROFILES_DIR: ./
 
@@ -24,8 +24,8 @@ concurrency:
 jobs:
   run_dbt_jobs:
     runs-on: ubuntu-latest
-    environment:
-      name: workflow_prod
+    environment: 
+      name: workflow_test
 
     steps:
       - uses: actions/checkout@v3
@@ -40,10 +40,10 @@ jobs:
           pip install -r requirements.txt
           dbt deps
 
-      - name: Update Core Models
+      - name: Build Daily Testing Views
         run: |
-          dbt run -m "core_models,tag:core" "fsc_evm,tag:bronze_core" "fsc_evm,tag:silver_core" "fsc_evm,tag:gold_core" "fsc_evm,tag:silver_prices" "fsc_evm,tag:gold_prices" "fsc_evm,tag:silver_labels" "fsc_evm,tag:gold_labels" "fsc_evm,tag:bronze_abis"
+          dbt run -m "fsc_evm,tag:daily_test"
       
-      - name: Send new logs for decoding
+      - name: Run Daily Tests
         run: |
-          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_decoded_logs_realtime" "fsc_evm,tag:streamline_decoded_logs_complete"
+          dbt test -m "fsc_evm,tag:daily_test"

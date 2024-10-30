@@ -75,6 +75,12 @@ models:
         +enabled: true
       utils:
         +enabled: true
+    decoder_package:
+      +enabled: false
+      abis:
+        +enabled: true
+      decoded_logs:
+        +enabled: true
 
 vars:
   "dbt_date:time_zone": GMT
@@ -144,26 +150,21 @@ vars:
   TRACES_REALTIME_NEW_BUILD: True
   CONFIRM_BLOCKS_REALTIME_NEW_BUILD: True
 
-  BLOCKS_TRANSACTIONS_HISTORY_NEW_BUILD: True
-
-  RECEIPTS_BY_HASH_HISTORY_NEW_BUILD: True
-  RECEIPTS_BY_HASH_HISTORY_SQL_LIMIT: 2200000
-  RECEIPTS_BY_HASH_HISTORY_PRODUCER_BATCH_SIZE: 750000
-  RECEIPTS_BY_HASH_HISTORY_WORKER_BATCH_SIZE: 60000
-  RECEIPTS_BY_HASH_HISTORY_ORDER_BY_CLAUSE: 'ORDER BY partition_key DESC, block_number DESC'
-
-  TRACES_HISTORY_NEW_BUILD: True
-  TRACES_HISTORY_SQL_LIMIT: 75000
-  TRACES_HISTORY_PRODUCER_BATCH_SIZE: 12000
-  TRACES_HISTORY_WORKER_BATCH_SIZE: 1750
-  TRACES_HISTORY_ORDER_BY_CLAUSE: 'ORDER BY partition_key DESC, block_number DESC'
-
   CONFIRM_BLOCKS_HISTORY_NEW_BUILD: True
+  CONFIRM_BLOCKS_HISTORY_SQL_LIMIT: 500000
+  CONFIRM_BLOCKS_HISTORY_PRODUCER_BATCH_SIZE: 100000
+  CONFIRM_BLOCKS_HISTORY_WORKER_BATCH_SIZE: 7500
+  CONFIRM_BLOCKS_HISTORY_ORDER_BY_CLAUSE: 'ORDER BY partition_key DESC, block_number DESC'
 
   ### PRICES ###
   ## REQUIRED
   PRICES_NATIVE_SYMBOLS: 'CORE'
   PRICES_PROVIDER_PLATFORMS: ['Core', 'core']
+
+  ### DECODING ###
+  BLOCK_EXPLORER_NAME: 'CoreScan'
+  BLOCK_EXPLORER_ABI_URL: 'https://openapi.coredao.org/api?module=contract&action=getabi&address='
+  BLOCK_EXPLORER_ABI_API_KEY_PATH: 'Vault/prod/block_explorers/core_scan'
   
   ### LABELS ###
 
