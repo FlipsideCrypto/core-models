@@ -1,5 +1,5 @@
-name: deploy_new_workflows
-run-name: deploy_new_workflows
+name: dbt_deploy_new_workflows
+run-name: dbt_deploy_new_workflows
 
 on:
   workflow_dispatch:
