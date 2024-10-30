@@ -165,6 +165,10 @@ vars:
   BLOCK_EXPLORER_NAME: 'CoreScan'
   BLOCK_EXPLORER_ABI_URL: 'https://openapi.coredao.org/api?module=contract&action=getabi&address='
   BLOCK_EXPLORER_ABI_API_KEY_PATH: 'Vault/prod/block_explorers/core_scan'
+
+  DECODED_LOGS_REALTIME_SQL_LIMIT: 10000000
+  DECODED_LOGS_REALTIME_PRODUCER_BATCH_SIZE: 1000000
+  DECODED_LOGS_REALTIME_WORKER_BATCH_SIZE: 100000
   
   ### LABELS ###
 
