@@ -40,6 +40,6 @@ jobs:
           pip install -r requirements.txt
           dbt deps
       
-      - name: Update Abi Models
+      - name: Update ABI models
         run: |
           dbt run -m "fsc_evm,tag:silver_abis" "fsc_evm,tag:gold_abis"

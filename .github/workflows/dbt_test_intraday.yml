@@ -40,10 +40,10 @@ jobs:
           pip install -r requirements.txt
           dbt deps
 
-      - name: Build Testing Views
+      - name: Build testing views
         run: |
           dbt run -m "fsc_evm,tag:recent_test"
       
-      - name: Run Intraday Tests
+      - name: Run intraday tests
         run: |
           dbt test -m "fsc_evm,tag:recent_test"
