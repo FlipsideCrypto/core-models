@@ -32,6 +32,7 @@ else
 endif
 
 deploy_new_github_action:
+	dbt run-operation fsc_evm.drop_github_actions_schema -t $(DBT_TARGET)
 	dbt seed -s github_actions__workflows -t $(DBT_TARGET)
 	dbt run -m "fsc_evm,tag:gha_tasks" --full-refresh -t $(DBT_TARGET)
 ifeq ($(findstring dev,$(DBT_TARGET)),dev)
@@ -40,7 +41,4 @@ else
 	dbt run-operation fsc_utils.create_gha_tasks --vars '{"START_GHA_TASKS":True}' -t $(DBT_TARGET)
 endif
 
-regular_incremental:
-	dbt run -m "fsc_evm,tag:core" -t $(DBT_TARGET)
-
-.PHONY: deploy_streamline_functions deploy_streamline_tables deploy_streamline_requests deploy_github_actions cleanup_time regular_incremental deploy_new_github_action
+.PHONY: deploy_streamline_functions deploy_streamline_tables deploy_streamline_requests deploy_github_actions cleanup_time deploy_new_github_action
