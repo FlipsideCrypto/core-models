@@ -40,6 +40,6 @@ jobs:
           pip install -r requirements.txt
           dbt deps
           
-      - name: Run DBT Jobs
+      - name: Get historical data
         run: |
           dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_core_history_confirm_blocks" "fsc_evm,tag:streamline_core_complete_confirm_blocks"

@@ -40,6 +40,6 @@ jobs:
           pip install -r requirements.txt
           dbt deps
 
-      - name: Deploy New Github Actions
+      - name: Deploy new workflows as Snowflake tasks
         run: |
           make deploy_new_github_action DBT_TARGET=prod

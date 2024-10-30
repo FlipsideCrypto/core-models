@@ -40,7 +40,7 @@ jobs:
           pip install -r requirements.txt
           dbt deps
 
-      - name: Update Core Models
+      - name: Update main models
         run: |
           dbt run -m "core_models,tag:core" "fsc_evm,tag:bronze_core" "fsc_evm,tag:silver_core" "fsc_evm,tag:gold_core" "fsc_evm,tag:silver_prices" "fsc_evm,tag:gold_prices" "fsc_evm,tag:silver_labels" "fsc_evm,tag:gold_labels" "fsc_evm,tag:bronze_abis"
       
