@@ -1,11 +1,11 @@
-name: dbt_run_streamline_chainhead
-run-name: dbt_run_streamline_chainhead
+name: dbt_run_scheduled_abis
+run-name: dbt_run_scheduled_abis
 
 on:
   workflow_dispatch:
     branches:
       - "main"
-
+    
 env:
   DBT_PROFILES_DIR: ./
 
@@ -20,12 +20,12 @@ env:
 
 concurrency:
   group: ${{ github.workflow }}
-
+  
 jobs:
   run_dbt_jobs:
     runs-on: ubuntu-latest
-    environment:
-      name: workflow_prod
+    environment: 
+      name: workflow_test
 
     steps:
       - uses: actions/checkout@v3
@@ -40,10 +40,10 @@ jobs:
           pip install -r requirements.txt
           dbt deps
 
-      - name: Get New Block Data
+      - name: Build Full Testing Views
         run: |
-          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_core_complete" "fsc_evm,tag:streamline_core_complete_receipts_by_hash" "fsc_evm,tag:streamline_core_realtime" "fsc_evm,tag:streamline_core_realtime_receipts_by_hash"
-
-      - name: Test Chainhead
+          dbt run -m "fsc_evm,tag:full_test"
+      
+      - name: Test All Data
         run: |
-          dbt test -m "fsc_evm,tag:chainhead"
+          dbt test -m "fsc_evm,tag:silver_abis" "fsc_evm,tag:gold_abis"
