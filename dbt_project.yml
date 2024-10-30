@@ -28,6 +28,8 @@ clean-targets: # directories to be removed by `dbt clean`
 tests:
   core_models:
     +store_failures: true # all tests
+  fsc_evm:
+    +store_failures: true
 
 on-run-start:
   - "{{ fsc_evm.create_sps() }}"
@@ -157,18 +159,6 @@ vars:
   TRACES_HISTORY_ORDER_BY_CLAUSE: 'ORDER BY partition_key DESC, block_number DESC'
 
   CONFIRM_BLOCKS_HISTORY_NEW_BUILD: True
-
-  # BLOCKS_TRANSACTIONS_REALTIME_TESTING_LIMIT: 3
-  # BLOCKS_TRANSACTIONS_HISTORY_TESTING_LIMIT: 3
-
-  # RECEIPTS_BY_HASH_REALTIME_TESTING_LIMIT: 3
-  # RECEIPTS_BY_HASH_HISTORY_TESTING_LIMIT: 3
-
-  # TRACES_REALTIME_TESTING_LIMIT: 3
-  # TRACES_HISTORY_TESTING_LIMIT: 3
-
-  # CONFIRM_BLOCKS_REALTIME_TESTING_LIMIT: 3
-  # CONFIRM_BLOCKS_HISTORY_TESTING_LIMIT: 3
 
   ### PRICES ###
   ## REQUIRED
