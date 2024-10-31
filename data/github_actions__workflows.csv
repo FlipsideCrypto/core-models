@@ -2,7 +2,6 @@ workflow_name,workflow_schedule
 dbt_run_streamline_chainhead,"23,53 * * * *"
 dbt_run_scheduled_main,"1,31 * * * *"
 dbt_test_intraday,"39 */4 * * *"
-dbt_run_streamline_history,"22 * * * *"
 dbt_test_daily,"22 8 * * *"
 dbt_test_monthly,"5 7 28 * *"
 dbt_run_scheduled_abis,"11 */12 * * *"
