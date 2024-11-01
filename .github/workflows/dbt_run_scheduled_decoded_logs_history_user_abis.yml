@@ -1,5 +1,5 @@
-name: dbt_run_scheduled_kick_decoded_logs_history
-run-name: dbt_run_scheduled_kick_decoded_logs_history
+name: dbt_run_scheduled_decoded_logs_history_user_abis
+run-name: dbt_run_scheduled_decoded_logs_history_user_abis
 
 on:
   workflow_dispatch:
