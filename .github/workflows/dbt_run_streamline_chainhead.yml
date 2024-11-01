@@ -42,7 +42,7 @@ jobs:
 
       - name: Get new block data
         run: |
-          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_core_complete" "fsc_evm,tag:streamline_core_complete_receipts_by_hash" "fsc_evm,tag:streamline_core_realtime" "fsc_evm,tag:streamline_core_realtime_receipts_by_hash"
+          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:streamline_core_complete" "fsc_evm,tag:streamline_core_complete_receipts_by_hash" "fsc_evm,tag:streamline_core_realtime" "fsc_evm,tag:streamline_core_realtime_receipts_by_hash" "fsc_evm,tag:streamline_core_complete_confirm_blocks" "fsc_evm,tag:streamline_core_realtime_confirm_blocks"
 
       - name: Test chainhead
         run: |

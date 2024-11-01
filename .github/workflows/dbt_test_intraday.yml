@@ -46,4 +46,4 @@ jobs:
       
       - name: Run intraday tests
         run: |
-          dbt test -m "fsc_evm,tag:recent_test"
+          dbt test -m "fsc_evm,tag:recent_test" "fsc_evm,tag:recent_test_confirm_blocks" 
