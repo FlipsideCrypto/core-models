@@ -127,6 +127,7 @@ vars:
   GLOBAL_PROD_DB_NAME: 'core'
   GLOBAL_NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
   GLOBAL_BLOCKS_PER_HOUR: 1200
+  GLOBAL_WRAPPED_ASSET_ADDRESS: '0x40375c92d9faf44d2f9db9bd9ba41a3317a2404f'
 
 
   ## OPTIONAL
@@ -148,7 +149,6 @@ vars:
   PRICES_PROVIDER_PLATFORMS: ['Core', 'core']
 
   ### DECODING ###
-  GLOBAL_WRAPPED_ASSET_ADDRESS: '0x40375c92d9faf44d2f9db9bd9ba41a3317a2404f'
   BLOCK_EXPLORER_NAME: 'CoreScan'
   BLOCK_EXPLORER_ABI_URL: 'https://openapi.coredao.org/api?module=contract&action=getabi&address='
   BLOCK_EXPLORER_ABI_API_KEY_PATH: 'Vault/prod/block_explorers/core_scan'
