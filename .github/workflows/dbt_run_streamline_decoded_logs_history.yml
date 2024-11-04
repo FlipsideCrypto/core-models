@@ -1,11 +1,11 @@
-name: dbt_run_scheduled_abis
-run-name: dbt_run_scheduled_abis
+name: dbt_run_streamline_decoded_logs_history
+run-name: dbt_run_streamline_decoded_logs_history
 
 on:
   workflow_dispatch:
     branches:
       - "main"
-    
+
 env:
   DBT_PROFILES_DIR: ./
 
@@ -20,11 +20,11 @@ env:
 
 concurrency:
   group: ${{ github.workflow }}
-  
+
 jobs:
   run_dbt_jobs:
     runs-on: ubuntu-latest
-    environment: 
+    environment:
       name: workflow_prod
 
     steps:
@@ -39,7 +39,11 @@ jobs:
         run: |
           pip install -r requirements.txt
           dbt deps
-      
-      - name: Update ABI models
+
+      - name: Update complete table
         run: |
-          dbt run -m "fsc_evm,tag:silver_abis" "fsc_evm,tag:gold_abis"
+          dbt run -m "fsc_evm,tag:streamline_decoded_logs_complete"
+
+      - name: Decode historical logs
+        run: |
+          dbt run-operation fsc_evm.decoded_logs_history --args '{"backfill_mode": true}' --vars '{"STREAMLINE_INVOKE_STREAMS":True}'
