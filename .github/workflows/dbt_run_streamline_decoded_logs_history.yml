@@ -46,4 +46,4 @@ jobs:
 
       - name: Decode historical logs
         run: |
-          dbt run-operation fsc_evm.decoded_logs_history --args '{"backfill_mode": true}' --vars '{"STREAMLINE_INVOKE_STREAMS":True}'
+          dbt run-operation fsc_evm.decoded_logs_history --vars '{"STREAMLINE_INVOKE_STREAMS":True}'
