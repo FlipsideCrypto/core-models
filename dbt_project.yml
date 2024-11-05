@@ -129,7 +129,6 @@ vars:
   GLOBAL_BLOCKS_PER_HOUR: 1200
   GLOBAL_WRAPPED_ASSET_ADDRESS: '0x40375c92d9faf44d2f9db9bd9ba41a3317a2404f'
 
-
   ## OPTIONAL
   GLOBAL_USES_RECEIPTS_BY_HASH: True
   GLOBAL_USES_BASE_FEE: False
@@ -143,19 +142,27 @@ vars:
   ## REQUIRED
   TRACES_FULL_RELOAD_START_BLOCK: 20000000
 
+  ## OPTIONAL
+  # GOLD_FULL_REFRESH: True
+  # SILVER_FULL_REFRESH: True
+
   ### PRICES ###
   ## REQUIRED
   PRICES_NATIVE_SYMBOLS: 'CORE'
   PRICES_PROVIDER_PLATFORMS: ['Core', 'core']
-
-  ### DECODING ###
-  BLOCK_EXPLORER_NAME: 'CoreScan'
-  BLOCK_EXPLORER_ABI_URL: 'https://openapi.coredao.org/api?module=contract&action=getabi&address='
-  BLOCK_EXPLORER_ABI_API_KEY_PATH: 'Vault/prod/block_explorers/core_scan'
   
   ### LABELS ###
 
   ### MAIN_PACKAGE VARIABLES END ###
+
+  ### DECODER_PACKAGE VARIABLES BEGIN ###
+
+  ## REQUIRED
+  BLOCK_EXPLORER_NAME: 'CoreScan'
+  BLOCK_EXPLORER_ABI_URL: 'https://openapi.coredao.org/api?module=contract&action=getabi&address='
+  BLOCK_EXPLORER_ABI_API_KEY_PATH: 'Vault/prod/block_explorers/core_scan'
+
+  ### DECODER_PACKAGE VARIABLES END ###
 
   ### CURATED_PACKAGE VARIABLES BEGIN ###
 
