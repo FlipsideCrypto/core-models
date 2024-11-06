@@ -63,6 +63,11 @@ models:
     +materialized: ephemeral
   fsc_evm:
     +enabled: false
+    +copy_grants: true
+    +persist_docs:
+      relation: true
+      columns: true
+    +on_schema_change: "append_new_columns"
     main_package:
       +enabled: false
       core:
