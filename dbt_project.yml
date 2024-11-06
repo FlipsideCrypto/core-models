@@ -17,7 +17,7 @@ test-paths: ["tests"]
 seed-paths: ["data"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-docs-paths: ["dbt_packages/fsc_evm/doc_descriptions", "models/doc_descriptions"]
+docs-paths: ["dbt_packages/fsc_evm/doc_descriptions", "models/doc_descriptions","models"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
@@ -63,6 +63,11 @@ models:
     +materialized: ephemeral
   fsc_evm:
     +enabled: false
+    +copy_grants: true
+    +persist_docs:
+      relation: true
+      columns: true
+    +on_schema_change: "append_new_columns"
     main_package:
       +enabled: false
       core:
