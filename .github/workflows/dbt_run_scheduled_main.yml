@@ -42,7 +42,7 @@ jobs:
 
       - name: Update main models
         run: |
-          dbt run -m "fsc_evm,tag:bronze_core" "fsc_evm,tag:silver_core" "fsc_evm,tag:gold_core" "fsc_evm,tag:silver_prices" "fsc_evm,tag:gold_prices" "fsc_evm,tag:silver_labels" "fsc_evm,tag:gold_labels" "fsc_evm,tag:bronze_abis" "fsc_evm,tag:silver_confirm_blocks"
+          dbt run -m "fsc_evm,tag:bronze_core" "fsc_evm,tag:silver_core" "fsc_evm,tag:gold_core" "fsc_evm,tag:silver_prices" "fsc_evm,tag:gold_prices" "fsc_evm,tag:silver_labels" "fsc_evm,tag:gold_labels" "fsc_evm,tag:bronze_abis" "fsc_evm,tag:silver_confirm_blocks" "fsc_evm,tag:nft_core"
       
       - name: Send new logs for decoding
         run: |
