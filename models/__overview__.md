@@ -31,6 +31,11 @@ There is more information on how to use dbt docs in the last section of this doc
   
 **Convenience Views (ez_):**
 - [ez_decoded_event_logs](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_decoded_event_logs)
+- [ez_native_transfers](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_native_transfers)
+- [ez_token_transfers](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_token_transfers)
+
+### NFT Tables (core.nft)
+- [ez_nft_transfers](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.nft__ez_nft_transfers)
 
 ## **Helpful User-Defined Functions (UDFs)**
 
