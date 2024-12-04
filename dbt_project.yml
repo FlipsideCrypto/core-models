@@ -77,6 +77,8 @@ models:
         +enabled: true
       labels:
         +enabled: true
+      observability:
+        +enabled: true
       prices:
         +enabled: true
       utils:
