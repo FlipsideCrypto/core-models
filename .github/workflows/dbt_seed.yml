@@ -1,5 +1,5 @@
-name: dbt_seed_refresh
-run-name: dbt_seed_refresh
+name: dbt_seed
+run-name: dbt_seed
 
 on:
   push:
