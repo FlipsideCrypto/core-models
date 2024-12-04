@@ -1,10 +1,12 @@
-name: dbt_test_intraday
-run-name: dbt_test_intraday
+name: dbt_seed_refresh
+run-name: dbt_seed_refresh
 
 on:
-  workflow_dispatch:
+  push:
     branches:
-      - "main"
+      - main
+    paths:
+      - "data/**/*.csv" # Only trigger when CSV files change
 
 env:
   DBT_PROFILES_DIR: ./
@@ -25,7 +27,7 @@ jobs:
   run_dbt_jobs:
     runs-on: ubuntu-latest
     environment:
-      name: workflow_test
+      name: workflow_prod
 
     steps:
       - uses: actions/checkout@v3
@@ -39,12 +41,6 @@ jobs:
         run: |
           pip install -r requirements.txt
           dbt deps
-
-      - name: Build testing views
+      - name: Run dbt seed
         run: |
-          dbt run -m "fsc_evm,tag:recent_test"
-
-      - name: Run intraday tests
-        run: |
-          dbt run -m "fsc_evm,tag:observability"
-          dbt test -m "fsc_evm,tag:recent_test" "fsc_evm,tag:recent_test_confirm_blocks"
+          dbt seed
