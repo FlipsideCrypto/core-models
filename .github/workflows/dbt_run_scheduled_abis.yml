@@ -43,3 +43,7 @@ jobs:
       - name: Update ABI models
         run: |
           dbt run -m "fsc_evm,tag:silver_abis" "fsc_evm,tag:gold_abis"
+
+      - name: Kick off decoded logs history, if there are new ABIs from users
+        run: |
+          dbt run-operation fsc_evm.run_decoded_logs_history
