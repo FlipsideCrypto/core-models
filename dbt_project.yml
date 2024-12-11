@@ -17,7 +17,8 @@ test-paths: ["tests"]
 seed-paths: ["data"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-docs-paths: ["dbt_packages/fsc_evm/doc_descriptions", "models/doc_descriptions","models"]
+docs-paths:
+  ["dbt_packages/fsc_evm/doc_descriptions", "models/doc_descriptions", "models"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
@@ -36,7 +37,7 @@ on-run-start:
   - "{{ fsc_evm.create_udfs() }}"
 
 on-run-end:
-  - '{{ fsc_evm.apply_meta_as_tags(results) }}'
+  - "{{ fsc_evm.apply_meta_as_tags(results) }}"
 
 dispatch:
   - macro_namespace: dbt
@@ -46,7 +47,7 @@ dispatch:
       - dbt
 
 query-comment:
-  comment: '{{ dbt_snowflake_query_tags.get_query_comment(node) }}'
+  comment: "{{ dbt_snowflake_query_tags.get_query_comment(node) }}"
   append: true # Snowflake removes prefixed comments.
 
 # Configuring models
@@ -76,6 +77,8 @@ models:
         +enabled: true
       labels:
         +enabled: true
+      observability:
+        +enabled: true
       prices:
         +enabled: true
       utils:
@@ -99,7 +102,7 @@ vars:
   HEAL_MODELS: []
   START_GHA_TASKS: False
 
-#### STREAMLINE 2.0 BEGIN ####
+  #### STREAMLINE 2.0 BEGIN ####
 
   API_INTEGRATION: '{{ var("config")[target.name]["API_INTEGRATION"] if var("config")[target.name] else var("config")["dev"]["API_INTEGRATION"] }}'
   EXTERNAL_FUNCTION_URI: '{{ var("config")[target.name]["EXTERNAL_FUNCTION_URI"] if var("config")[target.name] else var("config")["dev"]["EXTERNAL_FUNCTION_URI"] }}'
@@ -107,7 +110,7 @@ vars:
     ["INTERNAL_DEV"]
 
   config:
-  # The keys correspond to dbt profiles and are case sensitive
+    # The keys correspond to dbt profiles and are case sensitive
     dev:
       API_INTEGRATION: AWS_CORE_API_STG_V2
       EXTERNAL_FUNCTION_URI: jxvwlr7746.execute-api.us-east-1.amazonaws.com/stg/
@@ -123,16 +126,16 @@ vars:
         - INTERNAL_DEV
         - DBT_CLOUD_CORE
 
-#### STREAMLINE 2.0 END ####
+  #### STREAMLINE 2.0 END ####
 
-#### FSC_EVM BEGIN ####
+  #### FSC_EVM BEGIN ####
 
   ### GLOBAL VARIABLES BEGIN ###
   ## REQUIRED
-  GLOBAL_PROD_DB_NAME: 'core'
-  GLOBAL_NODE_SECRET_PATH: 'Vault/prod/core/ankr/mainnet'
+  GLOBAL_PROD_DB_NAME: "core"
+  GLOBAL_NODE_SECRET_PATH: "Vault/prod/core/ankr/mainnet"
   GLOBAL_BLOCKS_PER_HOUR: 1200
-  GLOBAL_WRAPPED_ASSET_ADDRESS: '0x40375c92d9faf44d2f9db9bd9ba41a3317a2404f'
+  GLOBAL_WRAPPED_ASSET_ADDRESS: "0x40375c92d9faf44d2f9db9bd9ba41a3317a2404f"
 
   ## OPTIONAL
   GLOBAL_USES_RECEIPTS_BY_HASH: True
@@ -155,19 +158,26 @@ vars:
 
   ### PRICES ###
   ## REQUIRED
-  PRICES_NATIVE_SYMBOLS: 'CORE'
-  PRICES_PROVIDER_PLATFORMS: ['Core', 'core']
-  
+  PRICES_NATIVE_SYMBOLS: "CORE"
+  PRICES_PROVIDER_PLATFORMS: ["Core", "core"]
+
   ### LABELS ###
+
+  ### OBSERVABILITY ###
+  OBSERV_USES_EXCLUSION_LIST_BLOCKS: False
+  OBSERV_USES_EXCLUSION_LIST_TRANSACTIONS: False
+  OBSERV_USES_EXCLUSION_LIST_RECEIPTS: False
+  OBSERV_USES_EXCLUSION_LIST_LOGS: False
+  OBSERV_USES_EXCLUSION_LIST_TRACES: False
 
   ### MAIN_PACKAGE VARIABLES END ###
 
   ### DECODER_PACKAGE VARIABLES BEGIN ###
 
   ## REQUIRED
-  BLOCK_EXPLORER_NAME: 'CoreScan'
-  BLOCK_EXPLORER_ABI_URL: 'https://openapi.coredao.org/api?module=contract&action=getabi&address='
-  BLOCK_EXPLORER_ABI_API_KEY_PATH: 'Vault/prod/block_explorers/core_scan'
+  BLOCK_EXPLORER_NAME: "CoreScan"
+  BLOCK_EXPLORER_ABI_URL: "https://openapi.coredao.org/api?module=contract&action=getabi&address="
+  BLOCK_EXPLORER_ABI_API_KEY_PATH: "Vault/prod/block_explorers/core_scan"
 
   ### DECODER_PACKAGE VARIABLES END ###
 
@@ -177,5 +187,4 @@ vars:
   # STATS_TOKEN_ADDRESS: '' ### REQUIRED
 
   ### CURATED_PACKAGE VARIABLES END ###
-
 #### FSC_EVM END ####

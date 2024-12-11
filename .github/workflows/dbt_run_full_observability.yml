@@ -1,5 +1,5 @@
-name: dbt_test_intraday
-run-name: dbt_test_intraday
+name: dbt_run_full_observability
+run-name: dbt_run_full_observability
 
 on:
   workflow_dispatch:
@@ -25,7 +25,7 @@ jobs:
   run_dbt_jobs:
     runs-on: ubuntu-latest
     environment:
-      name: workflow_test
+      name: workflow_prod_2xl
 
     steps:
       - uses: actions/checkout@v3
@@ -39,12 +39,6 @@ jobs:
         run: |
           pip install -r requirements.txt
           dbt deps
-
-      - name: Build testing views
+      - name: Run DBT Jobs
         run: |
-          dbt run -m "fsc_evm,tag:recent_test"
-
-      - name: Run intraday tests
-        run: |
-          dbt run -m "fsc_evm,tag:observability"
-          dbt test -m "fsc_evm,tag:recent_test" "fsc_evm,tag:recent_test_confirm_blocks"
+          dbt run --threads 2 --vars '{"OBSERV_FULL_TEST":True}' -m "fsc_evm,tag:observability"
