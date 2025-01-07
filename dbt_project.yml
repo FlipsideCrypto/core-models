@@ -89,6 +89,8 @@ models:
         +enabled: true
       decoded_logs:
         +enabled: true
+    scores_package:
+      +enabled: true
 
 vars:
   "dbt_date:time_zone": GMT
@@ -184,4 +186,11 @@ vars:
   # STATS_TOKEN_ADDRESS: '' ### REQUIRED
 
   ### CURATED_PACKAGE VARIABLES END ###
+
+  ### SCORES_PACKAGE VARIABLES BEGIN ###
+
+  SCORES_FULL_RELOAD_MODE: True
+  
+  ### SCORES_PACKAGE VARIABLES END ###
+
 #### FSC_EVM END ####
