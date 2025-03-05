@@ -9,9 +9,10 @@ concurrency: ${{ github.workflow }}
 jobs:
   called_workflow_template:
     uses: FlipsideCrypto/analytics-workflow-templates/.github/workflows/dbt.yml@main
+
     with:
       command: >
         dbt test --selector 'integration_tests'
       environment:  ${{ github.ref == 'refs/heads/main' && 'workflow_prod' || 'workflow_dev' }}
-      warehouse: ${{ vars.WAREHOUSE }}
+      warehouse: ${{ vars.WAREHOUSE != '' && vars.WAREHOUSE || 'DBT_CLOUD' }}
     secrets: inherit
