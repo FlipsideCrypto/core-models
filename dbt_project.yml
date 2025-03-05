@@ -177,6 +177,14 @@ vars:
   BLOCK_EXPLORER_NAME: "CoreScan"
   BLOCK_EXPLORER_ABI_URL: "https://openapi.coredao.org/api?module=contract&action=getabi&address="
   BLOCK_EXPLORER_ABI_API_KEY_PATH: "Vault/prod/block_explorers/core_scan"
+  BLOCK_EXPLORER_ABI_INTERACTION_LIMIT: 200
+  BLOCK_EXPLORER_ABI_LIMIT: 80
+  DECODER_ABIS_BLOCK_EXPLORER_URL: "https://openapi.coredao.org/api?module=contract&action=getabi&address="
+  DECODER_ABIS_BLOCK_EXPLORER_URL_SUFFIX: ""
+  DECODER_ABIS_BLOCK_EXPLORER_SECRET_PATH: "Vault/prod/block_explorers/core_scan"
+  DECODER_ABIS_RELEVANT_CONTRACT_LIMIT: 2
+  DECODER_ABIS_RELEVANT_CONTRACT_COUNT: 80
+  DECODER_ABIS_BRONZE_API_TABLE_ENABLED: True
 
   ### DECODER_PACKAGE VARIABLES END ###
 
@@ -190,7 +198,7 @@ vars:
   ### SCORES_PACKAGE VARIABLES BEGIN ###
 
   ### SCORES_FULL_RELOAD_MODE: True
-  
-  ### SCORES_PACKAGE VARIABLES END ###
 
+  ### SCORES_PACKAGE VARIABLES END ###
 #### FSC_EVM END ####
+
