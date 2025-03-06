@@ -47,3 +47,7 @@ jobs:
       - name: Send new logs for decoding
         run: |
           dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:bronze_decoded_logs" "fsc_evm,tag:streamline_decoded_logs_realtime" "fsc_evm,tag:streamline_decoded_logs_complete"
+
+      - name: Get new contract ABIs
+        run: |
+          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:bronze_abis" "fsc_evm,tag:streamline_abis_realtime" "fsc_evm,tag:streamline_abis_complete"
