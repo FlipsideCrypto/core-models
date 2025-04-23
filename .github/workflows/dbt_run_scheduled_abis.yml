@@ -47,3 +47,10 @@ jobs:
       - name: Kick off decoded logs history, if there are new ABIs from users
         run: |
           dbt run-operation fsc_evm.run_decoded_logs_history
+
+  notify-failure:
+    needs: [run_dbt_jobs]
+    if: failure()
+    uses: FlipsideCrypto/fsc-evm/.github/workflows/slack_notify.yml@main
+    secrets:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
