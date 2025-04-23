@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   schedule:
     # Runs “At 1:20 on Monday.” (see https://crontab.guru)
-    - cron: '20 13 * * 1'
+    - cron: "20 13 * * 1"
 
 env:
   DBT_PROFILES_DIR: ./
@@ -21,8 +21,6 @@ env:
 
 concurrency:
   group: ${{ github.workflow }}
-
-
 
 jobs:
   run_dbt_jobs_refresh:
@@ -76,7 +74,7 @@ jobs:
           dbt run-operation fsc_utils.create_evm_streamline_udfs --vars '{"UPDATE_UDFS_AND_SPS":True}' -t dev
           dbt run -s livequery_models.deploy.core._live --vars '{"UPDATE_UDFS_AND_SPS":True}' -t dev
 
-  notify-failure:
+  notify-failure2:
     needs: [run_dbt_jobs_udfs]
     if: failure()
     uses: FlipsideCrypto/fsc-evm/.github/workflows/slack_notify.yml@main
