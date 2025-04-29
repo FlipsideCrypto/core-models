@@ -3,22 +3,20 @@ run-name: ${{ github.event.inputs.branch }}
 
 on:
   workflow_dispatch:
+    branches:
+      - "main"
+    inputs:
+      environment:
+        type: string
+        required: true
 
 concurrency: ${{ github.workflow }}
 
 jobs:
   called_workflow_template:
-    uses: FlipsideCrypto/analytics-workflow-templates/.github/workflows/dbt.yml@main
+    uses: FlipsideCrypto/fsc-evm/.github/workflows/dbt_run_template_integration_test.yml@pre-release/v4-beta
     with:
-      command: >
+      target: ${{ inputs.environment }}
+      command: |
         dbt test --selector 'integration_tests'
-      environment: ${{ github.ref == 'refs/heads/main' && 'workflow_prod' || 'workflow_dev' }}
-      warehouse: ${{ vars.WAREHOUSE }}
     secrets: inherit
-
-  notify-failure:
-    needs: [called_workflow_template]
-    if: failure()
-    uses: FlipsideCrypto/fsc-evm/.github/workflows/slack_notify.yml@main
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

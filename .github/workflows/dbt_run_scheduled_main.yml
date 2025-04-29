@@ -6,55 +6,14 @@ on:
     branches:
       - "main"
 
-env:
-  DBT_PROFILES_DIR: ./
-
-  ACCOUNT: "${{ vars.ACCOUNT }}"
-  ROLE: "${{ vars.ROLE }}"
-  USER: "${{ vars.USER }}"
-  PASSWORD: "${{ secrets.PASSWORD }}"
-  REGION: "${{ vars.REGION }}"
-  DATABASE: "${{ vars.DATABASE }}"
-  WAREHOUSE: "${{ vars.WAREHOUSE }}"
-  SCHEMA: "${{ vars.SCHEMA }}"
-
 concurrency:
   group: ${{ github.workflow }}
 
 jobs:
-  run_dbt_jobs:
-    runs-on: ubuntu-latest
-    environment:
-      name: workflow_prod
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-          cache: "pip"
-
-      - name: install dependencies
-        run: |
-          pip install -r requirements.txt
-          dbt deps
-
-      - name: Update main models
-        run: |
-          dbt run -m "fsc_evm,tag:bronze_core" "fsc_evm,tag:silver_core" "fsc_evm,tag:gold_core" "fsc_evm,tag:silver_prices" "fsc_evm,tag:gold_prices" "fsc_evm,tag:silver_labels" "fsc_evm,tag:gold_labels" "fsc_evm,tag:silver_confirm_blocks" "fsc_evm,tag:nft_core"
-
-      - name: Send new logs for decoding
-        run: |
-          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:bronze_decoded_logs" "fsc_evm,tag:streamline_decoded_logs_realtime" "fsc_evm,tag:streamline_decoded_logs_complete"
-
-      - name: Get new contract ABIs
-        run: |
-          dbt run --vars '{"STREAMLINE_INVOKE_STREAMS":True}' -m "fsc_evm,tag:bronze_abis" "fsc_evm,tag:streamline_abis_realtime" "fsc_evm,tag:streamline_abis_complete"
-
-  notify-failure:
-    needs: [run_dbt_jobs]
-    if: failure()
-    uses: FlipsideCrypto/fsc-evm/.github/workflows/slack_notify.yml@main
-    secrets:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  called_workflow_template:
+    uses: FlipsideCrypto/fsc-evm/.github/workflows/dbt_run_template.yml@pre-release/v4-beta
+    with:
+      command_name: Run Main Models
+      command: |
+        dbt run -m "fsc_evm,tag:bronze,tag:core" "fsc_evm,tag:silver,tag:core" "fsc_evm,tag:gold,tag:core" "fsc_evm,tag:silver,tag:prices" "fsc_evm,tag:gold,tag:prices" "fsc_evm,tag:silver,tag:labels" "fsc_evm,tag:gold,tag:labels" "fsc_evm,tag:gold,tag:nft" "fsc_evm,tag:streamline,tag:decoded_logs,tag:realtime" "fsc_evm,tag:streamline,tag:decoded_logs,tag:complete" "fsc_evm,tag:streamline,tag:abis,tag:realtime" "fsc_evm,tag:streamline,tag:abis,tag:complete" --exclude "fsc_evm,tag:receipts" --vars '{"STREAMLINE_INVOKE_STREAMS":True}'
+    secrets: inherit

@@ -1,25 +1,22 @@
 version: 2
 
 sources:
-  - name: github_actions
-    database: "{{ target.database }}"
-    schema: github_actions
-    tables:
-      - name: workflows
   - name: bronze_streamline
     database: streamline
-    schema: >-
-      {{ var('GLOBAL_PROD_DB_NAME') ~ ('_dev' if var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else '') }}
+    schema: |
+      {{ target.database.upper() | replace('_DEV', '') ~ '_DEV' if var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else target.database.upper() | replace('_DEV', '') }}
     tables:
       - name: blocks
       - name: transactions
-      - name: >-
-          {{ 'receipts_by_hash' if var("GLOBAL_USES_RECEIPTS_BY_HASH", False) else 'receipts' }}
+      - name: receipts
+      - name: receipts_by_hash
       - name: traces
       - name: confirm_blocks
       - name: decoded_logs
+      - name: contract_abis
   - name: crosschain_silver
-    database: "{{ 'crosschain' if target.database.upper() == var('GLOBAL_PROD_DB_NAME').upper() else 'crosschain_dev' }}"
+    database: >-
+      {{ 'CROSSCHAIN_DEV' if '_DEV' in target.database.upper() else 'CROSSCHAIN' }}
     schema: silver
     tables:
       - name: labels_combined
@@ -29,24 +26,37 @@ sources:
       - name: complete_provider_prices
       - name: complete_token_asset_metadata
       - name: complete_token_prices
-  - name: bronze_api
-    database: "{{ target.database }}"
-    schema: bronze_api
-    tables:
-      - name: contract_abis
   - name: crosschain_public
     database: crosschain
     schema: bronze_public
     tables:
       - name: user_abis
-  - name: silver
+  - name: complete_streamline
+    database: "{{ target.database }}"
+    schema: streamline
+    tables:
+      - name: complete_contract_abis
+  - name: github_actions
+    database: "{{ target.database }}"
+    schema: github_actions
+    tables:
+      - name: workflows
+  - name: abis_silver
     database: "{{ target.database }}"
     schema: silver
     tables:
       - name: verified_abis
-  - name: bronze_abi
+      - name: complete_event_abis
+  - name: fsc_evm_admin
     database: >-
-      {{ var('GLOBAL_PROD_DB_NAME') ~ ('_dev' if var("STREAMLINE_USE_DEV_FOR_EXTERNAL_TABLES", False) else '') }}
-    schema: streamline
+      {{ 'FSC_EVM_DEV' if '_DEV' in target.database.upper() else 'FSC_EVM' }}
+    schema: admin
     tables:
-      - name: complete_contract_abis
+      - name: _master_keys
+      - name: rpc_node_logs
+  - name: logs_temp
+    database: "{{ target.database }}"
+    schema: silver
+    tables:
+      - name: logs
+      - name: decoded_logs
