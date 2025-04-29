@@ -18,24 +18,33 @@ There is more information on how to use dbt docs in the last section of this doc
 
 ### Core Tables (core.core)
 
-**Dimension Tables:**
-- [dim_labels](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__dim_labels)
+**Dimensional Tables**
 - [dim_contracts](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__dim_contracts)
 - [dim_contract_abis](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__dim_contract_abis)
+- [dim_labels](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__dim_labels)
 
 **Fact Tables:**
 - [fact_blocks](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_blocks)
-- [fact_event_logs](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_event_logs)
 - [fact_transactions](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_transactions)
+- [fact_event_logs](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_event_logs)
 - [fact_traces](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__fact_traces)
-  
-**Convenience Views (ez_):**
+
+**Convenience Tables:**
 - [ez_decoded_event_logs](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_decoded_event_logs)
 - [ez_native_transfers](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_native_transfers)
 - [ez_token_transfers](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_token_transfers)
 
+### Price Tables (core.price)
+- [dim_asset_metadata](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.price__dim_asset_metadata)
+- [fact_prices_ohlc_hourly](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.price__fact_prices_ohlc_hourly)
+- [ez_asset_metadata](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.price__ez_asset_metadata)
+- [ez_prices_hourly](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.price__ez_prices_hourly)
+
 ### NFT Tables (core.nft)
 - [ez_nft_transfers](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.nft__ez_nft_transfers)
+
+### Stats Tables (core.stats)
+- [ez_core_metrics_hourly](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.stats__ez_core_metrics_hourly)
 
 ## **Helpful User-Defined Functions (UDFs)**
 
