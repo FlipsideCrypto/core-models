@@ -70,9 +70,11 @@ models:
       columns: true
     +on_schema_change: "append_new_columns"
     main_package:
-      +enabled: false
-      core:
+      +enabled: false # disable main_package by default, enabled other packages as needed
+      admin:
         +enabled: true
+      core:
+        +enabled: true # enable subpackages, as needed
       github_actions:
         +enabled: true
       labels:
@@ -89,6 +91,10 @@ models:
         +enabled: true
       decoded_logs:
         +enabled: true
+    curated_package:
+      +enabled: false
+      stats:
+        +enabled: true
     scores_package:
       +enabled: true
 
@@ -102,8 +108,8 @@ vars:
   WAIT: 0
   HEAL_MODEL: False
   HEAL_MODELS: []
-  START_GHA_TASKS: False
-
+  MAIN_CORE_RECEIPTS_BY_HASH_ENABLED: True
+  
   #### STREAMLINE 2.0 BEGIN ####
 
   API_INTEGRATION: '{{ var("config")[target.name]["API_INTEGRATION"] if var("config")[target.name] else var("config")["dev"]["API_INTEGRATION"] }}'
@@ -129,73 +135,3 @@ vars:
         - DBT_CLOUD_CORE
 
   #### STREAMLINE 2.0 END ####
-
-  #### FSC_EVM BEGIN ####
-
-  ### GLOBAL VARIABLES BEGIN ###
-  ## REQUIRED
-  GLOBAL_PROD_DB_NAME: "core"
-  GLOBAL_NODE_SECRET_PATH: "Vault/prod/core/drpc/mainnet"
-  GLOBAL_BLOCKS_PER_HOUR: 1200
-  GLOBAL_WRAPPED_ASSET_ADDRESS: "0x40375c92d9faf44d2f9db9bd9ba41a3317a2404f"
-
-  ## OPTIONAL
-  GLOBAL_USES_RECEIPTS_BY_HASH: True
-  GLOBAL_AVG_TXS_PER_BLOCK: 50
-
-  ### GLOBAL VARIABLES END ###
-
-  ### MAIN_PACKAGE VARIABLES BEGIN ###
-
-  ### CORE ###
-  ## REQUIRED
-  TRACES_FULL_RELOAD_START_BLOCK: 20000000
-
-  ## OPTIONAL
-  # GOLD_FULL_REFRESH: True
-  # SILVER_FULL_REFRESH: True
-
-  ### PRICES ###
-  ## REQUIRED
-  PRICES_NATIVE_SYMBOLS: "CORE"
-  PRICES_PROVIDER_PLATFORMS: ["Core", "core"]
-
-  ### LABELS ###
-
-  ### OBSERVABILITY ###
-  OBSERV_USES_EXCLUSION_LIST_BLOCKS: False
-  OBSERV_USES_EXCLUSION_LIST_TRANSACTIONS: False
-  OBSERV_USES_EXCLUSION_LIST_RECEIPTS: False
-  OBSERV_USES_EXCLUSION_LIST_LOGS: False
-  OBSERV_USES_EXCLUSION_LIST_TRACES: False
-
-  ### MAIN_PACKAGE VARIABLES END ###
-
-  ### DECODER_PACKAGE VARIABLES BEGIN ###
-
-  ## REQUIRED
-
-  DECODER_ABIS_BLOCK_EXPLORER_NAME: "CoreScan"
-  DECODER_ABIS_BLOCK_EXPLORER_URL: "https://openapi.coredao.org/api?module=contract&action=getabi&address="
-  DECODER_ABIS_BLOCK_EXPLORER_URL_SUFFIX: ""
-  DECODER_ABIS_BLOCK_EXPLORER_SECRET_PATH: "Vault/prod/block_explorers/core_scan"
-  DECODER_ABIS_RELEVANT_CONTRACT_LIMIT: 50
-  DECODER_ABIS_RELEVANT_CONTRACT_COUNT: 200
-  DECODER_ABIS_BRONZE_API_TABLE_ENABLED: True
-
-  ### DECODER_PACKAGE VARIABLES END ###
-
-  ### CURATED_PACKAGE VARIABLES BEGIN ###
-
-  ### STATS ###
-  # STATS_TOKEN_ADDRESS: '' ### REQUIRED
-
-  ### CURATED_PACKAGE VARIABLES END ###
-
-  ### SCORES_PACKAGE VARIABLES BEGIN ###
-
-  ### SCORES_FULL_RELOAD_MODE: True
-
-  ### SCORES_PACKAGE VARIABLES END ###
-#### FSC_EVM END ####
-

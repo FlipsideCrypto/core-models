@@ -1,5 +1,5 @@
-name: dbt_test_monthly
-run-name: dbt_test_monthly
+name: dbt_run_heal_models
+run-name: dbt_run_heal_models
 
 on:
   workflow_dispatch:
@@ -13,11 +13,7 @@ jobs:
   called_workflow_template:
     uses: FlipsideCrypto/fsc-evm/.github/workflows/dbt_run_template.yml@pre-release/v4-beta
     with:
-      target: test
-      command_name: Build Full Testing Views
+      command_name: Run Heal Models
       command: |
-        dbt run -m "fsc_evm,tag:full_test"
-      command_name_2: Run Full Tests
-      command_2: |
-        dbt test -m "fsc_evm,tag:full_test"
+        dbt run -m "$PROJECT_NAME,tag:heal" --vars '{"HEAL_MODEL":True}'
     secrets: inherit
