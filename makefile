@@ -22,7 +22,7 @@ deploy_gha_workflows_table:
 deploy_gha_tasks:
 	@set -e; \
 	make deploy_gha_workflows_table DBT_TARGET=$(DBT_TARGET); \
-	dbt run -s livequery_base.deploy.marketplace.github --vars '{"UPDATE_UDFS_AND_SPS":True}' -t $(DBT_TARGET); \
+	dbt run -s livequery_models.deploy.marketplace.github --vars '{"UPDATE_UDFS_AND_SPS":True}' -t $(DBT_TARGET); \
 	dbt run -m "fsc_evm,tag:gha_tasks" --full-refresh -t $(DBT_TARGET); \
 	dbt run-operation fsc_evm.create_gha_tasks --vars '{"RESUME_GHA_TASKS":True}' -t $(DBT_TARGET)
 
@@ -35,13 +35,13 @@ deploy_new_gha_tasks:
 deploy_livequery:
 	@set -e; \
 	dbt run-operation fsc_evm.drop_livequery_schemas --vars '{"UPDATE_UDFS_AND_SPS": true}' -t $(DBT_TARGET); \
-	dbt run -m livequery_base.deploy.core --vars '{"UPDATE_UDFS_AND_SPS": true}' -t $(DBT_TARGET); \
+	dbt run -m livequery_models.deploy.core --vars '{"UPDATE_UDFS_AND_SPS": true}' -t $(DBT_TARGET); \
 	dbt run-operation fsc_evm.livequery_grants --vars '{"UPDATE_UDFS_AND_SPS": true}' -t $(DBT_TARGET)
 
 deploy_chain_phase_1:
 	@set -e; \
 	read -p "Exclude receipts_by_hash? [y/n] " receipts_by_hash; \
-	dbt run -m livequery_base.deploy.core --vars '{"UPDATE_UDFS_AND_SPS": true}' -t $(DBT_TARGET); \
+	dbt run -m livequery_models.deploy.core --vars '{"UPDATE_UDFS_AND_SPS": true}' -t $(DBT_TARGET); \
 	dbt run-operation fsc_evm.livequery_grants --vars '{"UPDATE_UDFS_AND_SPS": true}' -t $(DBT_TARGET); \
 	dbt run-operation fsc_evm.create_evm_streamline_udfs --vars '{"UPDATE_UDFS_AND_SPS": true}' -t $(DBT_TARGET); \
 	dbt run-operation fsc_evm.call_sample_rpc_node -t $(DBT_TARGET); \

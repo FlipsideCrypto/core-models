@@ -108,7 +108,8 @@ vars:
   WAIT: 0
   HEAL_MODEL: False
   HEAL_MODELS: []
-
+  MAIN_CORE_RECEIPTS_BY_HASH_ENABLED: True
+  
   #### STREAMLINE 2.0 BEGIN ####
 
   API_INTEGRATION: '{{ var("config")[target.name]["API_INTEGRATION"] if var("config")[target.name] else var("config")["dev"]["API_INTEGRATION"] }}'
