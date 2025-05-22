@@ -14,6 +14,7 @@ sources:
       - name: confirm_blocks
       - name: decoded_logs
       - name: contract_abis
+      - name: state_tracer
   - name: crosschain_silver
     database: >-
       {{ 'CROSSCHAIN_DEV' if '_DEV' in target.database.upper() else 'CROSSCHAIN' }}
