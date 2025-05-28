@@ -13,7 +13,7 @@ WITH stargate_contracts AS (
         tx_hash,
         to_address AS contract_address,
         POSITION(
-            '00000000000000000000000000000000000000000000000000000000000000c0',
+            '00000000000000000000000000000000000000000000000000000000000000e0',
             input,
             LENGTH(input) - 703
         ) AS argument_start, -- starting position of arguments

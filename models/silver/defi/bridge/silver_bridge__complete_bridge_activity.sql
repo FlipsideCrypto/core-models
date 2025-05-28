@@ -251,7 +251,10 @@ complete_bridge_activity AS (
                 '-',
                 version
             ) IN (
-                'meson-v1'
+                'meson-v1',
+                'stargate-v2-v2',
+                'gaszip-lz-v2-v2',
+                'core-bridge-v1'
             ) THEN LOWER(destination_chain)
             WHEN d.chain IS NULL THEN LOWER(destination_chain)
             ELSE LOWER(
