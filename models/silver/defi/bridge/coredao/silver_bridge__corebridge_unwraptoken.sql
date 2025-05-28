@@ -33,7 +33,7 @@ WITH unwrap_token AS (
         ) AS _log_id,
         modified_timestamp AS _inserted_timestamp
     FROM
-        core.core.fact_event_logs
+        {{ ref('core__fact_event_logs') }}
     WHERE
         contract_address = '0xa4218e1f39da4aadac971066458db56e901bcbde'
         AND topic_0 = '0x3b661011d9e0ff8f0dc432bac4ed79eabf70cf52596ed9de985810ef36689e9e'
