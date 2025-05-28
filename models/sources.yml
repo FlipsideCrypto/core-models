@@ -60,3 +60,8 @@ sources:
     tables:
       - name: logs
       - name: decoded_logs
+  - name: external_gold_defillama
+    database: external
+    schema: defillama
+    tables:
+      - name: dim_chains
