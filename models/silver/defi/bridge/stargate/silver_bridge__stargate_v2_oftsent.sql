@@ -16,7 +16,7 @@ WITH stargate_contracts AS (
             '00000000000000000000000000000000000000000000000000000000000000c0',
             input,
             LENGTH(input) - 703
-        ) AS argument_start,
+        ) AS argument_start, -- starting position of arguments
         SUBSTR(input, argument_start, LENGTH(input) - argument_start + 1) AS arguments,
         regexp_SUBSTR_all(SUBSTR(arguments, 0, len(arguments)), '.{64}') AS segmented_arguments,
         ARRAY_SIZE(segmented_arguments) AS data_size,
@@ -74,7 +74,7 @@ AND _inserted_timestamp >= SYSDATE() - INTERVAL '7 day'
 {% endif %}
 ),
 oft_sent AS (
-    -- bridging transactions
+    -- bridging transactions from stargate v2 only
     SELECT
         block_number,
         block_timestamp,
