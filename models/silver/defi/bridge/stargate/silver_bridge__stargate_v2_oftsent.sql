@@ -7,71 +7,17 @@
 ) }}
 
 WITH stargate_contracts AS (
-
     SELECT
-        block_timestamp,
-        tx_hash,
-        to_address AS contract_address,
-        POSITION(
-            '00000000000000000000000000000000000000000000000000000000000000e0',
-            input,
-            LENGTH(input) - 703
-        ) AS argument_start, -- starting position of arguments
-        SUBSTR(input, argument_start, LENGTH(input) - argument_start + 1) AS arguments,
-        regexp_SUBSTR_all(SUBSTR(arguments, 0, len(arguments)), '.{64}') AS segmented_arguments,
-        ARRAY_SIZE(segmented_arguments) AS data_size,
-        CONCAT(
-            '0x',
-            SUBSTR(
-                segmented_arguments [2] :: STRING,
-                25,
-                40
-            )
-        ) AS token_address,
-        utils.udf_hex_to_int(
-            segmented_arguments [data_size-8] :: STRING
-        ) AS decimals,
-        utils.udf_hex_to_int(
-            segmented_arguments [data_size-7] :: STRING
-        ) AS shared_decimals,
-        CONCAT(
-            '0x',
-            SUBSTR(
-                segmented_arguments [data_size-6] :: STRING,
-                25,
-                40
-            )
-        ) AS endpoint,
-        CONCAT(
-            '0x',
-            SUBSTR(
-                segmented_arguments [data_size-5] :: STRING,
-                25,
-                40
-            )
-        ) AS owner,
-        utils.udf_hex_to_string(
-            segmented_arguments [data_size-3] :: STRING
-        ) AS token_name,
-        utils.udf_hex_to_string(
-            segmented_arguments [data_size-1] :: STRING
-        ) AS token_symbol
+        pool_address,
+        token_address,
+        decimals,
+        shared_decimals,
+        endpoint,
+        owner,
+        token_name,
+        token_symbol
     FROM
-        {{ ref('core__fact_traces') }}
-    WHERE
-        origin_function_signature = '0x61014060'
-        AND from_address = '0x1d7c6783328c145393e84fb47a7f7c548f5ee28d'
-        AND trace_succeeded
-
-{% if is_incremental() %}
-AND _inserted_timestamp >= (
-    SELECT
-        MAX(_inserted_timestamp) - INTERVAL '12 hours'
-    FROM
-        {{ this }}
-)
-AND _inserted_timestamp >= SYSDATE() - INTERVAL '7 day'
-{% endif %}
+        {{ ref('silver_bridge__stargate_v2_pools') }}
 ),
 oft_sent AS (
     -- bridging transactions from stargate v2 only
@@ -92,6 +38,7 @@ oft_sent AS (
         TRY_TO_NUMBER(utils.udf_hex_to_int(segmented_data [0] :: STRING)) AS dstEid,
         TRY_TO_NUMBER(utils.udf_hex_to_int(segmented_data [1] :: STRING)) AS amountsentld,
         TRY_TO_NUMBER(utils.udf_hex_to_int(segmented_data [2] :: STRING)) AS amountreceivedld,
+        token_address,
         CONCAT(
             tx_hash :: STRING,
             '-',
@@ -101,7 +48,7 @@ oft_sent AS (
     FROM
         {{ ref('core__fact_event_logs') }}
         e
-        INNER JOIN stargate_contracts USING(contract_address)
+        INNER JOIN stargate_contracts on contract_address = pool_address
     WHERE
         topics [0] = '0x85496b760a4b7f8d66384b9df21b381f5d1b1e79f229a47aaf4c232edc2fe59a'
         AND tx_succeeded
@@ -141,7 +88,7 @@ bus_mode AS (
             128
         ) AS passenger,
         TRY_TO_NUMBER(utils.udf_hex_to_int(SUBSTR(passenger, 3, 4))) AS asset_id,
-        CONCAT('0x', SUBSTR(passenger, 3 + 4 + 24, 40)) AS receiver,
+        CONCAT('0x', SUBSTR(passenger, 3 + 4 + 24, 40)) AS receiver
     FROM
         {{ ref('core__fact_event_logs') }}
     WHERE
@@ -156,13 +103,13 @@ bus_mode AS (
         AND tx_succeeded
 
 {% if is_incremental() %}
-AND _inserted_timestamp >= (
+AND modified_timestamp >= (
     SELECT
         MAX(_inserted_timestamp) - INTERVAL '12 hours'
     FROM
         {{ this }}
 )
-AND _inserted_timestamp >= SYSDATE() - INTERVAL '7 day'
+AND modified_timestamp >= SYSDATE() - INTERVAL '7 day'
 {% endif %}
 ),
 taxi_mode AS (
@@ -178,10 +125,10 @@ taxi_mode AS (
     FROM
         {{ ref('core__fact_traces') }}
     WHERE
-        to_address = '0xaf54be5b6eec24d6bfacf1cce4eaf680a8239398'
+        to_address = '0xaf54be5b6eec24d6bfacf1cce4eaf680a8239398' -- tokenmessaging
         AND from_address IN (
             SELECT
-                contract_address
+                pool_address
             FROM
                 stargate_contracts
         )
@@ -195,17 +142,30 @@ taxi_mode AS (
             input,
             10
         ) = '0xff6fb300'
-        AND tx_succeeded
+        AND trace_succeeded
 
 {% if is_incremental() %}
-AND _inserted_timestamp >= (
+AND modified_timestamp >= (
     SELECT
         MAX(_inserted_timestamp) - INTERVAL '12 hours'
     FROM
         {{ this }}
 )
-AND _inserted_timestamp >= SYSDATE() - INTERVAL '7 day'
+AND modified_timestamp >= SYSDATE() - INTERVAL '7 day'
 {% endif %}
+),
+bridge_mode AS (
+    SELECT
+        receiver,
+        tx_hash
+    FROM
+        bus_mode
+    UNION ALL
+    SELECT
+        receiver,
+        tx_hash
+    FROM
+        taxi_mode
 )
 SELECT
     block_number,
@@ -226,29 +186,13 @@ SELECT
     LOWER(
         s.chain :: STRING
     ) AS destination_chain,
-    C.token_address,
+    token_address,
     _log_id,
     b._inserted_timestamp
 FROM
     oft_sent b
-    INNER JOIN stargate_contracts C
-    ON b.contract_address = C.contract_address
-    LEFT JOIN (
-        SELECT
-            receiver,
-            tx_hash
-        FROM
-            bus_mode
-        UNION ALL
-        SELECT
-            receiver,
-            tx_hash
-        FROM
-            taxi_mode
-    ) m
+    LEFT JOIN bridge_mode m
     ON m.tx_hash = b.tx_hash
     INNER JOIN {{ ref('silver_bridge__layerzero_bridge_seed') }}
     s
     ON b.dstEid :: STRING = s.eid :: STRING
-ORDER BY
-    block_timestamp DESC
