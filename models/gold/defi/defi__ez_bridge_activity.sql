@@ -2,12 +2,9 @@
     materialized = 'view',
     persist_docs ={ "relation": true,
     "columns": true },
-    meta ={ 
-        'database_tags':{
-            'table':{
-                'PROTOCOL': 'MESON, STARGATE, SYMBIOSIS, GASZIP, COREBRIDGE, GASZIP',
-                'PURPOSE': 'BRIDGE'
-        } } }
+    meta ={ 'database_tags':{ 'table':{ 'PROTOCOL': 'MESON, STARGATE, SYMBIOSIS, GASZIP, COREBRIDGE, GASZIP',
+    'PURPOSE': 'BRIDGE' }} },
+    tags = ['gold','defi','bridge','curated','ez']
 ) }}
 
 SELECT
@@ -35,7 +32,7 @@ SELECT
     amount,
     ROUND(
         CASE
-            WHEN amount_usd < 1e+15 THEN amount_usd
+            WHEN amount_usd < 1e + 15 THEN amount_usd
             ELSE NULL
         END,
         2
@@ -46,14 +43,8 @@ SELECT
             ['_id']
         ) }}
     ) AS ez_bridge_activity_id,
-    COALESCE(
-        inserted_timestamp,
-        '2000-01-01'
-    ) AS inserted_timestamp,
-    COALESCE(
-        modified_timestamp,
-        '2000-01-01'
-    ) AS modified_timestamp
+    inserted_timestamp,
+    modified_timestamp
 FROM
     {{ ref('silver_bridge__complete_bridge_activity') }}
     b

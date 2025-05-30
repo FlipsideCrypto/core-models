@@ -67,7 +67,6 @@ SELECT
     event_index,
     topic_0,
     event_name,
-    tx_status,
     contract_address AS bridge_address,
     platform,
     from_address AS sender,
