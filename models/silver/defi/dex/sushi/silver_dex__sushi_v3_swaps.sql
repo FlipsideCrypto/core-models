@@ -40,8 +40,8 @@ WITH swaps_base AS (
             's2c',
             segmented_data [4] :: STRING
         ) :: FLOAT AS tick,
-        token0_address,
-        token1_address,
+        token0,
+        token1,
         pool_address,
         tick_spacing,
         fee,
@@ -89,8 +89,8 @@ SELECT
     tick,
     tick_spacing,
     liquidity,
-    token0_address,
-    token1_address,
+    token0,
+    token1,
     amount0_unadj,
     amount1_unadj,
     CASE
@@ -102,12 +102,12 @@ SELECT
         ELSE ABS(amount1_unadj)
     END AS amount_out_unadj,
     CASE
-        WHEN amount0_unadj > 0 THEN token0_address
-        ELSE token1_address
+        WHEN amount0_unadj > 0 THEN token0
+        ELSE token1
     END AS token_in,
     CASE
-        WHEN amount0_unadj < 0 THEN token0_address
-        ELSE token1_address
+        WHEN amount0_unadj < 0 THEN token0
+        ELSE token1
     END AS token_out,
     _log_id,
     modified_timestamp
