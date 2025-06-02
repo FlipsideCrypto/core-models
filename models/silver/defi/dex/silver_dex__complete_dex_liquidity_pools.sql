@@ -17,6 +17,41 @@ WITH contracts AS (
   FROM
     {{ ref('silver__contracts') }}
 ),
+bitflux AS (
+  SELECT
+    block_number,
+    block_timestamp,
+    tx_hash,
+    contract_address,
+    pool_address,
+    NULL AS pool_name,
+    NULL AS fee,
+    NULL AS tick_spacing,
+    token0,
+    token1,
+    token2,
+    token3,
+    NULL AS token4,
+    NULL AS token5,
+    NULL AS token6,
+    NULL AS token7,
+    'bitflux' AS platform,
+    'v1' AS version,
+    _log_id AS _id,
+    _inserted_timestamp
+  FROM
+    {{ ref('silver_dex__bitflux_pools') }}
+
+{% if is_incremental() and 'bitflux' not in var('HEAL_MODELS') %}
+WHERE
+  _inserted_timestamp >= (
+    SELECT
+      MAX(_inserted_timestamp) - INTERVAL '{{ var("LOOKBACK", "4 hours") }}'
+    FROM
+      {{ this }}
+  )
+{% endif %}
+),
 corex AS (
   SELECT
     block_number,
@@ -24,17 +59,17 @@ corex AS (
     tx_hash,
     contract_address,
     pool_address,
-    NULL as pool_name,
+    NULL AS pool_name,
     fee,
     tick_spacing,
     token0,
     token1,
-    NULL as token2,
-    NULL as token3,
-    NULL as token4,
-    NULL as token5,
-    NULL as token6,
-    NULL as token7,
+    NULL AS token2,
+    NULL AS token3,
+    NULL AS token4,
+    NULL AS token5,
+    NULL AS token6,
+    NULL AS token7,
     'corex' AS platform,
     'v1' AS version,
     _log_id AS _id,
@@ -59,18 +94,18 @@ glyph_v4 AS (
     tx_hash,
     contract_address,
     pool_address,
-    NULL as pool_name,
+    NULL AS pool_name,
     fee,
     tick_spacing,
     token0,
     token1,
-    NULL as token2,
-    NULL as token3,
-    NULL as token4,
-    NULL as token5,
-    NULL as token6,
-    NULL as token7,
-    'glyph_v4' AS platform,
+    NULL AS token2,
+    NULL AS token3,
+    NULL AS token4,
+    NULL AS token5,
+    NULL AS token6,
+    NULL AS token7,
+    'glyph-v4' AS platform,
     'v4' AS version,
     _log_id AS _id,
     _inserted_timestamp
@@ -94,18 +129,18 @@ sushi_v3 AS (
     tx_hash,
     contract_address,
     pool_address,
-    NULL as pool_name,
+    NULL AS pool_name,
     fee,
     tick_spacing,
     token0,
     token1,
-    NULL as token2,
-    NULL as token3,
-    NULL as token4,
-    NULL as token5,
-    NULL as token6,
-    NULL as token7,
-    'sushi_v3' AS platform,
+    NULL AS token2,
+    NULL AS token3,
+    NULL AS token4,
+    NULL AS token5,
+    NULL AS token6,
+    NULL AS token7,
+    'sushi-v3' AS platform,
     'v3' AS version,
     _log_id AS _id,
     modified_timestamp AS _inserted_timestamp
@@ -126,16 +161,21 @@ all_pools AS (
   SELECT
     *
   FROM
+    bitflux
+  UNION ALL
+  SELECT
+    *
+  FROM
     corex
-UNION ALL 
-SELECT 
+  UNION ALL
+  SELECT
     *
-FROM 
+  FROM
     glyph_v4
-UNION ALL 
-SELECT 
+  UNION ALL
+  SELECT
     *
-FROM 
+  FROM
     sushi_v3
 ),
 complete_lps AS (
@@ -150,8 +190,8 @@ complete_lps AS (
       WHEN pool_name IS NULL
       AND platform IN (
         'corex',
-        'glyph_v4',
-        'sushi_v3'
+        'glyph-v4',
+        'sushi-v3'
       ) THEN CONCAT(
         COALESCE(
           c0.token_symbol,
@@ -173,15 +213,16 @@ complete_lps AS (
           0
         ),
         CASE
-          WHEN platform = 'corex' THEN 'COREX LP'
-          WHEN platform = 'glyph_v4' THEN 'GLYPH-V4 LP'
-          WHEN platform = 'sushi_v3' THEN 'SUSHI-V3 LP'
+          WHEN platform = 'corex' THEN ' COREX LP'
+          WHEN platform = 'glyph-v4' THEN ' GLYPH-V4 LP'
+          WHEN platform = 'sushi-v3' THEN ' SUSHI-V3 LP'
         END
       )
       WHEN pool_name IS NULL
       AND platform IN (
         'balancer',
-        'curve'
+        'curve',
+        'bitflux'
       ) THEN CONCAT(
         COALESCE(c0.token_symbol, SUBSTRING(token0, 1, 5) || '...' || SUBSTRING(token0, 39, 42)),
         CASE
@@ -328,8 +369,8 @@ heal_model AS (
       WHEN pool_name IS NULL
       AND platform IN (
         'corex',
-        'glyph_v4',
-        'sushi_v3'
+        'glyph-v4',
+        'sushi-v3'
       ) THEN CONCAT(
         COALESCE(
           c0.token_symbol,
@@ -351,15 +392,16 @@ heal_model AS (
           0
         ),
         CASE
-          WHEN platform = 'corex' THEN 'COREX LP'
-          WHEN platform = 'glyph_v4' THEN 'GLYPH-V4 LP'
-          WHEN platform = 'sushi_v3' THEN 'SUSHI-V3 LP'
+          WHEN platform = 'corex' THEN ' COREX LP'
+          WHEN platform = 'glyph-v4' THEN ' GLYPH-V4 LP'
+          WHEN platform = 'sushi-v3' THEN ' SUSHI-V3 LP'
         END
       )
       WHEN pool_name IS NULL
       AND platform IN (
         'balancer',
-        'curve'
+        'curve',
+        'bitflux'
       ) THEN CONCAT(
         COALESCE(c0.token_symbol, SUBSTRING(token0, 1, 5) || '...' || SUBSTRING(token0, 39, 42)),
         CASE

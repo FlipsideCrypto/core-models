@@ -8,7 +8,43 @@
   tags = ['curated','reorg','heal']
 ) }}
 
-WITH corex AS (
+WITH 
+bitflux AS (
+  SELECT
+    block_number,
+    block_timestamp,
+    tx_hash,
+    origin_function_signature,
+    origin_from_address,
+    origin_to_address,
+    pool_address AS contract_address,
+    event_name,
+    amount_in_unadj,
+    amount_out_unadj,
+    token_in,
+    token_out,
+    sender,
+    tx_to,
+    event_index,
+    'bitflux' AS platform,
+    'v1' AS version,
+    _log_id,
+    _inserted_timestamp
+  FROM
+    {{ ref('silver_dex__bitflux_swaps') }}
+
+{% if is_incremental() and 'bitflux' not in var('HEAL_MODELS') %}
+WHERE
+  _inserted_timestamp >= (
+    SELECT
+      MAX(_inserted_timestamp) - INTERVAL '{{ var("LOOKBACK", "4 hours") }}'
+    FROM
+      {{ this }}
+  )
+{% endif %}
+),
+
+corex AS (
 
   SELECT
     block_number,
@@ -28,12 +64,12 @@ WITH corex AS (
       ELSE ABS(amount1_unadj)
     END AS amount_out_unadj,
     CASE
-      WHEN amount0_unadj > 0 THEN token0_address
-      ELSE token1_address
+      WHEN amount0_unadj > 0 THEN token0
+      ELSE token1
     END AS token_in,
     CASE
-      WHEN amount0_unadj < 0 THEN token0_address
-      ELSE token1_address
+      WHEN amount0_unadj < 0 THEN token0
+      ELSE token1
     END AS token_out,
     sender,
     recipient AS tx_to,
@@ -56,11 +92,98 @@ WHERE
 {% endif %}
 ),
 
+glyph_v4 AS (
+
+  SELECT
+    block_number,
+    block_timestamp,
+    tx_hash,
+    origin_function_signature,
+    origin_from_address,
+    origin_to_address,
+    pool_address AS contract_address,
+    'Swap' AS event_name,
+    amount_in_unadj,
+    amount_out_unadj,
+    token_in,
+    token_out,
+    sender,
+    recipient AS tx_to,
+    event_index,
+    'glyph-v4' AS platform,
+    'v4' AS version,
+    _log_id,
+    modified_timestamp AS _inserted_timestamp
+  FROM
+    {{ ref('silver_dex__glyph_v4_swaps') }}
+
+{% if is_incremental() and 'glyph_v4' not in var('HEAL_MODELS') %}
+WHERE
+  _inserted_timestamp >= (
+    SELECT
+      MAX(_inserted_timestamp) - INTERVAL '{{ var("LOOKBACK", "4 hours") }}'
+    FROM
+      {{ this }}
+  )
+{% endif %}
+),
+
+sushi_v3 AS (
+
+  SELECT
+    block_number,
+    block_timestamp,
+    tx_hash,
+    origin_function_signature,
+    origin_from_address,
+    origin_to_address,
+    pool_address AS contract_address,
+    'Swap' AS event_name,
+    amount_in_unadj,
+    amount_out_unadj,
+    token_in,
+    token_out,
+    sender,
+    recipient AS tx_to,
+    event_index,
+    'sushi-v3' AS platform,
+    'v3' AS version,
+    _log_id,
+    modified_timestamp AS _inserted_timestamp
+  FROM
+    {{ ref('silver_dex__sushi_v3_swaps') }}
+
+{% if is_incremental() and 'sushi_v3' not in var('HEAL_MODELS') %}
+WHERE
+  _inserted_timestamp >= (
+    SELECT
+      MAX(_inserted_timestamp) - INTERVAL '{{ var("LOOKBACK", "4 hours") }}'
+    FROM
+      {{ this }}
+  )
+{% endif %}
+),
+
 all_dex AS (
+  SELECT 
+  *
+  FROM
+  bitflux
+  UNION ALL
   SELECT
     *
   FROM
     corex
+  UNION ALL
+  SELECT
+    *
+  FROM
+    glyph_v4
+  UNION ALL
+  SELECT
+    *
+  FROM
+    sushi_v3
 ),
 complete_dex_swaps AS (
   SELECT
