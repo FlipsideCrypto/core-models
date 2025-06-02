@@ -17,8 +17,14 @@ WITH pool_creation AS (
         regexp_substr_all(SUBSTR(DATA, 3, len(DATA)), '.{64}') AS segmented_data,
         CONCAT('0x', SUBSTR(topic_1, 27, 40)) AS token0,
         CONCAT('0x', SUBSTR(topic_2, 27, 40)) AS token1,
-        TRY_TO_NUMBER(utils.udf_hex_to_int(topic_3)) AS fee,
-        TRY_TO_NUMBER(utils.udf_hex_to_int(segmented_data [0] :: STRING)) AS tick_spacing,
+        utils.udf_hex_to_int(
+            's2c',
+            topic_3
+        ) :: INTEGER AS fee,
+        utils.udf_hex_to_int(
+            's2c',
+            segmented_data [0] :: STRING
+        ) :: INTEGER AS tick_spacing,
         CONCAT('0x', SUBSTR(segmented_data [1] :: STRING, 25, 40)) AS pool_address,
         CONCAT(
             tx_hash :: STRING,

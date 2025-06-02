@@ -76,7 +76,7 @@ tick_spacing AS (
         utils.udf_hex_to_int(
             's2c',
             DATA :: STRING
-        ) AS tick_spacing
+        ) :: INTEGER AS tick_spacing
     FROM
         {{ ref('core__fact_event_logs') }}
     WHERE
@@ -106,7 +106,7 @@ fee AS (
         utils.udf_hex_to_int(
             's2c',
             DATA :: STRING
-        ) AS fee
+        ) :: INTEGER AS fee
     FROM
         {{ ref('core__fact_event_logs') }}
     WHERE

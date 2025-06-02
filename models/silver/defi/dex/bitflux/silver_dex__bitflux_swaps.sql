@@ -99,6 +99,7 @@ SELECT
     origin_to_address,
     buyer AS recipient,
     buyer AS sender,
+    buyer AS tx_to,
     'TokenSwap' AS event_name,
     event_index,
     token0,

@@ -89,7 +89,7 @@ SELECT
     p.contract_address,
     token0,
     token1,
-    fee :: INTEGER AS fee,
+    fee,
     (
         fee / 10000
     ) :: FLOAT AS fee_percent,
