@@ -3,7 +3,7 @@
     incremental_strategy = 'delete+insert',
     unique_key = 'block_number',
     cluster_by = ['block_timestamp::DATE'],
-    tags = ['curated','reorg']
+    tags = ['silver_dex','defi','dex','curated']
 ) }}
 
 WITH bitflux_pools AS (
@@ -17,7 +17,7 @@ WITH bitflux_pools AS (
         decimal0,
         decimal1,
         decimal2,
-        decimal3,
+        decimal3
     FROM
         {{ ref('silver_dex__bitflux_pools') }}
 ),

@@ -2,14 +2,9 @@
     materialized = 'view',
     persist_docs ={ "relation": true,
     "columns": true },
-    meta={
-    'database_tags':{
-        'table': {
-            'PROTOCOL': 'SUSHI, BITFLUX, GLYPH, COREX',
-            'PURPOSE': 'DEX, LIQUIDITY, POOLS, LP, SWAPS',
-            }
-        }
-    }
+    meta ={ 'database_tags':{ 'table':{ 'PROTOCOL': 'SUSHI, BITFLUX, GLYPH, COREX',
+    'PURPOSE': 'DEX, LIQUIDITY, POOLS, LP, SWAPS',}}},
+    tags = ['gold','defi','dex','curated']
 ) }}
 
 SELECT
@@ -23,12 +18,9 @@ SELECT
     tokens,
     symbols,
     decimals,
-    COALESCE (
-        complete_dex_liquidity_pools_id,
-        {{ dbt_utils.generate_surrogate_key(
-            ['pool_address']
-        ) }}
-    ) AS dim_dex_liquidity_pools_id,
+    {{ dbt_utils.generate_surrogate_key(
+        ['pool_address']
+    ) }} AS dim_dex_liquidity_pools_id,
     inserted_timestamp,
     modified_timestamp
 FROM

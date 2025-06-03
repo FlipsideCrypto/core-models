@@ -2,29 +2,24 @@
     materialized = 'view',
     persist_docs ={ "relation": true,
     "columns": true },
-    meta={
-        'database_tags':{
-            'table': {
-                'PROTOCOL': 'SUSHI, BITFLUX, GLYPH, COREX',
-                'PURPOSE': 'DEX, SWAPS'
-            }
-        }
-    }
+    meta ={ 'database_tags':{ 'table':{ 'PROTOCOL': 'SUSHI, BITFLUX, GLYPH, COREX',
+    'PURPOSE': 'DEX, SWAPS' }}},
+    tags = ['gold','defi','dex','curated','ez']
 ) }}
 
 SELECT
-  block_number,
-  block_timestamp,
-  tx_hash,
-  origin_function_signature,
-  origin_from_address,
-  origin_to_address,
-  contract_address,
-  pool_name,
-  event_name,
-  amount_in_unadj,
-  amount_in,
-  ROUND(
+    block_number,
+    block_timestamp,
+    tx_hash,
+    origin_function_signature,
+    origin_from_address,
+    origin_to_address,
+    contract_address,
+    pool_name,
+    event_name,
+    amount_in_unadj,
+    amount_in,
+    ROUND(
         CASE
             WHEN token_in <> '0x191e94fa59739e188dce837f7f6978d84727ad01'
             AND (
@@ -50,20 +45,18 @@ SELECT
         END,
         2
     ) AS amount_out_usd,
-  sender,
-  tx_to,
-  event_index,
-  platform,
-  token_in,
-  token_out,
-  symbol_in,
-  symbol_out,
-    COALESCE (
-        complete_dex_swaps_id,
-        {{ dbt_utils.generate_surrogate_key(
-            ['tx_hash','event_index']
-        ) }}
-    ) AS ez_dex_swaps_id,
+    sender,
+    tx_to,
+    event_index,
+    platform,
+    token_in,
+    token_out,
+    symbol_in,
+    symbol_out,
+    {{ dbt_utils.generate_surrogate_key(
+        ['tx_hash','event_index']
+    ) }} AS ez_dex_swaps_id,
     inserted_timestamp,
     modified_timestamp
-FROM {{ ref('silver_dex__complete_dex_swaps') }}
+FROM
+    {{ ref('silver_dex__complete_dex_swaps') }}

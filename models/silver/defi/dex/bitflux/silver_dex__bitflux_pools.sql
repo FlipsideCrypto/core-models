@@ -3,7 +3,7 @@
     incremental_strategy = 'delete+insert',
     unique_key = 'pool_address',
     cluster_by = ['block_timestamp::DATE'],
-    tags = ['curated']
+    tags = ['silver_dex','defi','dex','curated']
 ) }}
 
 WITH pool_traces AS (
@@ -15,7 +15,7 @@ WITH pool_traces AS (
         to_address AS pool_address,
         to_address AS contract_address,
         regexp_substr_all(SUBSTR(input, 11, len(input)), '.{64}') AS segmented_data,
-        TRY_TO_NUMBER(utils.udf_hex_to_int(segmented_data [0] :: STRING)) / 32 AS token_index,
+        TRY_TO_NUMBER(utils.udf_hex_to_int(segmented_data [0] :: STRING)) / 32 AS token_index, 
         TRY_TO_NUMBER(utils.udf_hex_to_int(segmented_data [1] :: STRING)) / 32 AS decimal_index,
         TRY_TO_NUMBER(
             utils.udf_hex_to_int(
