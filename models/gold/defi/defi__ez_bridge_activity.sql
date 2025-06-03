@@ -32,7 +32,7 @@ SELECT
     amount,
     ROUND(
         CASE
-            WHEN amount_usd < 1e + 15 THEN amount_usd
+            WHEN amount_usd < 1e+15 THEN amount_usd
             ELSE NULL
         END,
         2
