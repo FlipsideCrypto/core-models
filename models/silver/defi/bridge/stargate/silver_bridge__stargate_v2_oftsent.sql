@@ -7,6 +7,7 @@
 ) }}
 
 WITH stargate_contracts AS (
+
     SELECT
         pool_address,
         token_address,
@@ -48,7 +49,8 @@ oft_sent AS (
     FROM
         {{ ref('core__fact_event_logs') }}
         e
-        INNER JOIN stargate_contracts on contract_address = pool_address
+        INNER JOIN stargate_contracts
+        ON contract_address = pool_address
     WHERE
         topics [0] = '0x85496b760a4b7f8d66384b9df21b381f5d1b1e79f229a47aaf4c232edc2fe59a'
         AND tx_succeeded
@@ -179,8 +181,14 @@ SELECT
     event_name,
     platform,
     origin_from_address AS sender,
-    receiver,
-    receiver AS destination_chain_receiver,
+    COALESCE(
+        receiver,
+        origin_from_address
+    ) AS receiver,
+    COALESCE(
+        receiver,
+        origin_from_address
+    ) AS destination_chain_receiver,
     amountSentLD AS amount_unadj,
     b.dstEid AS destination_chain_id,
     LOWER(
