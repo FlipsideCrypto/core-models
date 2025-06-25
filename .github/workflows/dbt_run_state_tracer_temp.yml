@@ -15,6 +15,7 @@ jobs:
   called_workflow_template:
     uses: FlipsideCrypto/fsc-evm/.github/workflows/dbt_run_template.yml@main
     with:
+      warehouse: DBT_EMERGENCY
       command_name: Backfill Silver State Tracer Models
       command: |
         dbt run -m balances_package.silver.silver__state_tracer --vars '{"BALANCES_SILVER_STATE_TRACER_FULL_RELOAD_ENABLED":true}'
