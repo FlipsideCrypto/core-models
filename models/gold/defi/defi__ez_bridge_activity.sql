@@ -41,6 +41,7 @@ SELECT
         END,
         2
     ) AS amount_usd,
+    token_is_verified,
     {{ dbt_utils.generate_surrogate_key(
         ['_id']
     ) }} AS ez_bridge_activity_id,
