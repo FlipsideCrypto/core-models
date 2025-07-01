@@ -6,7 +6,8 @@
     tags = ['silver_bridge','defi','bridge','curated']
 ) }}
 
-WITH senddeposits AS ( -- gaszip lz v2 event (only 1 per tx)
+WITH senddeposits AS (
+    -- gaszip lz v2 event (only 1 per tx)
 
     SELECT
         block_number,
@@ -40,7 +41,8 @@ AND _inserted_timestamp >= (
 AND _inserted_timestamp >= SYSDATE() - INTERVAL '7 day'
 {% endif %}
 ),
-packetsent AS ( -- pulls lz packetsent events from gaszip txs only (1 packet per chain, may have >1 per tx)
+packetsent AS (
+    -- pulls lz packetsent events from gaszip txs only (1 packet per chain, may have >1 per tx)
     SELECT
         tx_hash,
         event_index,
@@ -81,7 +83,8 @@ AND modified_timestamp >= (
 AND modified_timestamp >= SYSDATE() - INTERVAL '7 day'
 {% endif %}
 ),
-nativetransfers AS ( -- pulls native transfers in gaszip lz v2 bridging
+nativetransfers AS (
+    -- pulls native transfers in gaszip lz v2 bridging
     SELECT
         tx_hash,
         TRY_TO_NUMBER(amount_precise_raw) AS amount_precise_raw,
@@ -121,7 +124,8 @@ SELECT
     origin_to_address,
     origin_function_signature,
     s.tx_hash,
-    p.event_index, -- joins on packetsent event index instead of senddeposits for uniqueness
+    p.event_index,
+    -- joins on packetsent event index instead of senddeposits for uniqueness
     'SendDeposit' AS event_name,
     'gaszip-lz-v2' AS platform,
     'v2' AS version,
@@ -148,5 +152,5 @@ FROM
     LEFT JOIN nativetransfers t
     ON p.tx_hash = t.tx_hash
     AND event_rank = transfer_rank
-    LEFT JOIN {{ ref('silver_bridge__layerzero_bridge_seed') }}
+    LEFT JOIN {{ ref('silver_bridge__layerzero_v2_bridge_seed') }}
     ON dstEid = eid
