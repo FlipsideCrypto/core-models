@@ -33,6 +33,8 @@ There is more information on how to use dbt docs in the last section of this doc
 - [ez_decoded_event_logs](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_decoded_event_logs)
 - [ez_native_transfers](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_native_transfers)
 - [ez_token_transfers](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_token_transfers)
+- [ez_balances_native](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_balances_native)
+- [ez_balances_erc20](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.core__ez_balances_erc20)
 
 ### Price Tables (core.price)
 - [dim_asset_metadata](https://flipsidecrypto.github.io/core-models/#!/model/model.fsc_evm.price__dim_asset_metadata)
