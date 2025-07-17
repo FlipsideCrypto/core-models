@@ -100,7 +100,13 @@ models:
       defi:
         +enabled: false
         bridge:
-          +enabled: true
+          +enabled: false
+          layerzero:
+            +enabled: true 
+          stargate:
+            +enabled: true
+          everclear:
+            +enabled: true
     balances_package:
       +enabled: true
     scores_package:
