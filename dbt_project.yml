@@ -105,8 +105,6 @@ models:
             +enabled: true 
           stargate:
             +enabled: true
-          everclear:
-            +enabled: true
     balances_package:
       +enabled: true
     scores_package:
