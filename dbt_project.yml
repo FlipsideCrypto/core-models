@@ -69,6 +69,7 @@ models:
       relation: true
       columns: true
     +on_schema_change: "append_new_columns"
+    +post-hook: "{{ fsc_evm.enable_change_tracking() }}"
     main_package:
       +enabled: false # disable main_package by default, enabled other packages as needed
       admin:
