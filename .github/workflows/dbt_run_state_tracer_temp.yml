@@ -1,0 +1,19 @@
+name: dbt_run_state_tracer_temp
+run-name: dbt_run_state_tracer_temp
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "12 */1 * * *"
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  called_workflow_template:
+    uses: FlipsideCrypto/fsc-evm/.github/workflows/dbt_run_template.yml@main
+    with:
+      command_name: Temp Full Reload
+      command: |
+        dbt run -m silver__state_tracer --vars '{"BALANCES_SILVER_STATE_TRACER_FULL_RELOAD_ENABLED":true}'
+    secrets: inherit
